@@ -103,6 +103,23 @@ namespace ControleEstoqueLibrary
             }
         }
 
+        public static bool RegistroExiste<T>(string tableName, string columnName, string value)
+        {
+            using (IDbConnection cnn = new SQLiteConnection(LoadConnectionString()))
+            {
+                bool result = false;
+
+                string query = "select * from " + tableName + " where " + tableName + "." + columnName + " == '" + value + "'";
+
+                if (cnn.Query<T>(query, new DynamicParameters()).Count() > 0)
+                {
+                    result = true;
+                }
+
+                return result;
+            }
+        }
+
         private static string LoadConnectionString(string id = "Default")
         {
             return ConfigurationManager.ConnectionStrings[id].ConnectionString;

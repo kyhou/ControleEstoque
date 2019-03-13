@@ -286,12 +286,28 @@ namespace ControleEstoque
 
         private void TxtPreçoCusto_Leave(object sender, EventArgs e)
         {
-            txtPreçoCusto.Text = string.Format("{0:C}", decimal.Parse(txtPreçoCusto.Text));
+            if (txtPreçoCusto.Text != "")
+            {
+                txtPreçoCusto.Text = string.Format("{0:C}", decimal.Parse(txtPreçoCusto.Text.Replace("R$ ", "")));
+            }
         }
 
         private void TxtPreçoVenda_Leave(object sender, EventArgs e)
         {
-            txtPreçoVenda.Text = string.Format("{0:C}", decimal.Parse(txtPreçoVenda.Text));
+            if (txtPreçoVenda.Text != "")
+            {
+                txtPreçoVenda.Text = string.Format("{0:C}", decimal.Parse(txtPreçoVenda.Text.Replace("R$ ", "")));
+            }
+        }
+
+        private void TxtPreçoCusto_Enter(object sender, EventArgs e)
+        {
+            txtPreçoCusto.Text = txtPreçoCusto.Text.Replace("R$ ", "");
+        }
+
+        private void TxtPreçoVenda_Enter(object sender, EventArgs e)
+        {
+            txtPreçoVenda.Text = txtPreçoVenda.Text.Replace("R$ ", "");
         }
     }
 }

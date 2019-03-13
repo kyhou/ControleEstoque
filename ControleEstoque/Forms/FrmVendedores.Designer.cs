@@ -30,21 +30,15 @@
         {
             this.components = new System.ComponentModel.Container();
             this.label11 = new System.Windows.Forms.Label();
-            this.label13 = new System.Windows.Forms.Label();
             this.label1 = new System.Windows.Forms.Label();
             this.txtID = new System.Windows.Forms.TextBox();
-            this.btSearchPessoa = new System.Windows.Forms.Button();
-            this.btLimpar = new System.Windows.Forms.Button();
-            this.btSalvar = new System.Windows.Forms.Button();
             this.txtPlaca = new System.Windows.Forms.TextBox();
             this.label2 = new System.Windows.Forms.Label();
-            this.btSearchPraça = new System.Windows.Forms.Button();
             this.txtIdPessoa = new System.Windows.Forms.TextBox();
             this.txtNomePessoa = new System.Windows.Forms.TextBox();
             this.label3 = new System.Windows.Forms.Label();
-            this.txtIdPraça = new System.Windows.Forms.TextBox();
             this.label4 = new System.Windows.Forms.Label();
-            this.txtPraça = new System.Windows.Forms.TextBox();
+            this.panel1 = new System.Windows.Forms.Panel();
             this.btAlterar = new System.Windows.Forms.Button();
             this.btExcluir = new System.Windows.Forms.Button();
             this.btAdd = new System.Windows.Forms.Button();
@@ -53,10 +47,20 @@
             this.btProximo = new System.Windows.Forms.Button();
             this.btAnterior = new System.Windows.Forms.Button();
             this.btPrimeiro = new System.Windows.Forms.Button();
-            this.panel1 = new System.Windows.Forms.Panel();
             this.errorProvider = new System.Windows.Forms.ErrorProvider(this.components);
+            this.dgvPraças = new System.Windows.Forms.DataGridView();
+            this.txtCodigo = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.txtNome = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.btSearchPessoa = new System.Windows.Forms.Button();
+            this.btLimpar = new System.Windows.Forms.Button();
+            this.btSalvar = new System.Windows.Forms.Button();
+            this.btAddPraça = new System.Windows.Forms.Button();
+            this.btRemoverPraça = new System.Windows.Forms.Button();
+            this.txtCNH = new System.Windows.Forms.TextBox();
+            this.label5 = new System.Windows.Forms.Label();
             this.panel1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.errorProvider)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.dgvPraças)).BeginInit();
             this.SuspendLayout();
             // 
             // label11
@@ -67,15 +71,6 @@
             this.label11.Size = new System.Drawing.Size(78, 13);
             this.label11.TabIndex = 41;
             this.label11.Text = "Código Pessoa";
-            // 
-            // label13
-            // 
-            this.label13.AutoSize = true;
-            this.label13.Location = new System.Drawing.Point(9, 95);
-            this.label13.Name = "label13";
-            this.label13.Size = new System.Drawing.Size(71, 13);
-            this.label13.TabIndex = 47;
-            this.label13.Text = "Código Praça";
             // 
             // label1
             // 
@@ -94,45 +89,9 @@
             this.txtID.Size = new System.Drawing.Size(73, 20);
             this.txtID.TabIndex = 52;
             // 
-            // btSearchPessoa
-            // 
-            this.btSearchPessoa.FlatAppearance.BorderSize = 0;
-            this.btSearchPessoa.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.btSearchPessoa.Image = global::ControleEstoque.Properties.Resources.search_16;
-            this.btSearchPessoa.Location = new System.Drawing.Point(170, 68);
-            this.btSearchPessoa.Name = "btSearchPessoa";
-            this.btSearchPessoa.Size = new System.Drawing.Size(21, 21);
-            this.btSearchPessoa.TabIndex = 8;
-            this.btSearchPessoa.UseVisualStyleBackColor = true;
-            this.btSearchPessoa.Click += new System.EventHandler(this.btSearchPessoa_Click);
-            // 
-            // btLimpar
-            // 
-            this.btLimpar.FlatAppearance.BorderSize = 0;
-            this.btLimpar.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.btLimpar.Image = global::ControleEstoque.Properties.Resources.delete_sign;
-            this.btLimpar.Location = new System.Drawing.Point(53, 145);
-            this.btLimpar.Name = "btLimpar";
-            this.btLimpar.Size = new System.Drawing.Size(35, 31);
-            this.btLimpar.TabIndex = 46;
-            this.btLimpar.UseVisualStyleBackColor = true;
-            this.btLimpar.Click += new System.EventHandler(this.btLimpar_Click);
-            // 
-            // btSalvar
-            // 
-            this.btSalvar.FlatAppearance.BorderSize = 0;
-            this.btSalvar.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.btSalvar.Image = global::ControleEstoque.Properties.Resources.save;
-            this.btSalvar.Location = new System.Drawing.Point(12, 145);
-            this.btSalvar.Name = "btSalvar";
-            this.btSalvar.Size = new System.Drawing.Size(35, 31);
-            this.btSalvar.TabIndex = 45;
-            this.btSalvar.UseVisualStyleBackColor = true;
-            this.btSalvar.Click += new System.EventHandler(this.btSalvar_Click);
-            // 
             // txtPlaca
             // 
-            this.txtPlaca.Location = new System.Drawing.Point(461, 111);
+            this.txtPlaca.Location = new System.Drawing.Point(12, 108);
             this.txtPlaca.Name = "txtPlaca";
             this.txtPlaca.Size = new System.Drawing.Size(100, 20);
             this.txtPlaca.TabIndex = 55;
@@ -140,23 +99,11 @@
             // label2
             // 
             this.label2.AutoSize = true;
-            this.label2.Location = new System.Drawing.Point(458, 94);
+            this.label2.Location = new System.Drawing.Point(9, 91);
             this.label2.Name = "label2";
             this.label2.Size = new System.Drawing.Size(34, 13);
             this.label2.TabIndex = 54;
             this.label2.Text = "Placa";
-            // 
-            // btSearchPraça
-            // 
-            this.btSearchPraça.FlatAppearance.BorderSize = 0;
-            this.btSearchPraça.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.btSearchPraça.Image = global::ControleEstoque.Properties.Resources.search_16;
-            this.btSearchPraça.Location = new System.Drawing.Point(91, 110);
-            this.btSearchPraça.Name = "btSearchPraça";
-            this.btSearchPraça.Size = new System.Drawing.Size(21, 21);
-            this.btSearchPraça.TabIndex = 56;
-            this.btSearchPraça.UseVisualStyleBackColor = true;
-            this.btSearchPraça.Click += new System.EventHandler(this.btSearchPraça_Click);
             // 
             // txtIdPessoa
             // 
@@ -182,29 +129,30 @@
             this.label3.TabIndex = 60;
             this.label3.Text = "Nome";
             // 
-            // txtIdPraça
-            // 
-            this.txtIdPraça.Enabled = false;
-            this.txtIdPraça.Location = new System.Drawing.Point(12, 111);
-            this.txtIdPraça.Name = "txtIdPraça";
-            this.txtIdPraça.Size = new System.Drawing.Size(73, 20);
-            this.txtIdPraça.TabIndex = 61;
-            // 
             // label4
             // 
             this.label4.AutoSize = true;
-            this.label4.Location = new System.Drawing.Point(115, 95);
+            this.label4.Location = new System.Drawing.Point(13, 138);
             this.label4.Name = "label4";
-            this.label4.Size = new System.Drawing.Size(35, 13);
+            this.label4.Size = new System.Drawing.Size(40, 13);
             this.label4.TabIndex = 63;
-            this.label4.Text = "Praça";
+            this.label4.Text = "Praças";
             // 
-            // txtPraça
+            // panel1
             // 
-            this.txtPraça.Location = new System.Drawing.Point(118, 111);
-            this.txtPraça.Name = "txtPraça";
-            this.txtPraça.Size = new System.Drawing.Size(324, 20);
-            this.txtPraça.TabIndex = 62;
+            this.panel1.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.panel1.Controls.Add(this.btAlterar);
+            this.panel1.Controls.Add(this.btExcluir);
+            this.panel1.Controls.Add(this.btAdd);
+            this.panel1.Controls.Add(this.btPesquisar);
+            this.panel1.Controls.Add(this.btUltimo);
+            this.panel1.Controls.Add(this.btProximo);
+            this.panel1.Controls.Add(this.btAnterior);
+            this.panel1.Controls.Add(this.btPrimeiro);
+            this.panel1.Location = new System.Drawing.Point(-1, 0);
+            this.panel1.Name = "panel1";
+            this.panel1.Size = new System.Drawing.Size(588, 47);
+            this.panel1.TabIndex = 64;
             // 
             // btAlterar
             // 
@@ -310,45 +258,131 @@
             this.btPrimeiro.UseVisualStyleBackColor = true;
             this.btPrimeiro.Click += new System.EventHandler(this.btPrimeiro_Click);
             // 
-            // panel1
-            // 
-            this.panel1.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-            this.panel1.Controls.Add(this.btAlterar);
-            this.panel1.Controls.Add(this.btExcluir);
-            this.panel1.Controls.Add(this.btAdd);
-            this.panel1.Controls.Add(this.btPesquisar);
-            this.panel1.Controls.Add(this.btUltimo);
-            this.panel1.Controls.Add(this.btProximo);
-            this.panel1.Controls.Add(this.btAnterior);
-            this.panel1.Controls.Add(this.btPrimeiro);
-            this.panel1.Location = new System.Drawing.Point(-1, 0);
-            this.panel1.Name = "panel1";
-            this.panel1.Size = new System.Drawing.Size(588, 47);
-            this.panel1.TabIndex = 64;
-            // 
             // errorProvider
             // 
             this.errorProvider.ContainerControl = this;
+            // 
+            // dgvPraças
+            // 
+            this.dgvPraças.AllowUserToAddRows = false;
+            this.dgvPraças.AllowUserToDeleteRows = false;
+            this.dgvPraças.AllowUserToResizeRows = false;
+            this.dgvPraças.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
+            this.dgvPraças.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
+            this.txtCodigo,
+            this.txtNome});
+            this.dgvPraças.Location = new System.Drawing.Point(11, 154);
+            this.dgvPraças.Name = "dgvPraças";
+            this.dgvPraças.ReadOnly = true;
+            this.dgvPraças.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
+            this.dgvPraças.Size = new System.Drawing.Size(548, 113);
+            this.dgvPraças.TabIndex = 65;
+            // 
+            // txtCodigo
+            // 
+            this.txtCodigo.HeaderText = "Código";
+            this.txtCodigo.Name = "txtCodigo";
+            this.txtCodigo.ReadOnly = true;
+            // 
+            // txtNome
+            // 
+            this.txtNome.HeaderText = "Nome";
+            this.txtNome.Name = "txtNome";
+            this.txtNome.ReadOnly = true;
+            // 
+            // btSearchPessoa
+            // 
+            this.btSearchPessoa.FlatAppearance.BorderSize = 0;
+            this.btSearchPessoa.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.btSearchPessoa.Image = global::ControleEstoque.Properties.Resources.search_16;
+            this.btSearchPessoa.Location = new System.Drawing.Point(170, 68);
+            this.btSearchPessoa.Name = "btSearchPessoa";
+            this.btSearchPessoa.Size = new System.Drawing.Size(21, 21);
+            this.btSearchPessoa.TabIndex = 8;
+            this.btSearchPessoa.UseVisualStyleBackColor = true;
+            this.btSearchPessoa.Click += new System.EventHandler(this.btSearchPessoa_Click);
+            // 
+            // btLimpar
+            // 
+            this.btLimpar.FlatAppearance.BorderSize = 0;
+            this.btLimpar.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.btLimpar.Image = global::ControleEstoque.Properties.Resources.delete_sign;
+            this.btLimpar.Location = new System.Drawing.Point(53, 305);
+            this.btLimpar.Name = "btLimpar";
+            this.btLimpar.Size = new System.Drawing.Size(35, 31);
+            this.btLimpar.TabIndex = 46;
+            this.btLimpar.UseVisualStyleBackColor = true;
+            this.btLimpar.Click += new System.EventHandler(this.btLimpar_Click);
+            // 
+            // btSalvar
+            // 
+            this.btSalvar.FlatAppearance.BorderSize = 0;
+            this.btSalvar.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.btSalvar.Image = global::ControleEstoque.Properties.Resources.save;
+            this.btSalvar.Location = new System.Drawing.Point(12, 305);
+            this.btSalvar.Name = "btSalvar";
+            this.btSalvar.Size = new System.Drawing.Size(35, 31);
+            this.btSalvar.TabIndex = 45;
+            this.btSalvar.UseVisualStyleBackColor = true;
+            this.btSalvar.Click += new System.EventHandler(this.btSalvar_Click);
+            // 
+            // btAddPraça
+            // 
+            this.btAddPraça.FlatAppearance.BorderSize = 0;
+            this.btAddPraça.Location = new System.Drawing.Point(16, 273);
+            this.btAddPraça.Name = "btAddPraça";
+            this.btAddPraça.Size = new System.Drawing.Size(75, 23);
+            this.btAddPraça.TabIndex = 56;
+            this.btAddPraça.Text = "Adicionar";
+            this.btAddPraça.UseVisualStyleBackColor = true;
+            this.btAddPraça.Click += new System.EventHandler(this.btAddPraça_Click);
+            // 
+            // btRemoverPraça
+            // 
+            this.btRemoverPraça.Location = new System.Drawing.Point(97, 273);
+            this.btRemoverPraça.Name = "btRemoverPraça";
+            this.btRemoverPraça.Size = new System.Drawing.Size(75, 23);
+            this.btRemoverPraça.TabIndex = 66;
+            this.btRemoverPraça.Text = "Remover";
+            this.btRemoverPraça.UseVisualStyleBackColor = true;
+            this.btRemoverPraça.Click += new System.EventHandler(this.btRemoverPraça_Click);
+            // 
+            // txtCNH
+            // 
+            this.txtCNH.Location = new System.Drawing.Point(129, 108);
+            this.txtCNH.Name = "txtCNH";
+            this.txtCNH.Size = new System.Drawing.Size(100, 20);
+            this.txtCNH.TabIndex = 67;
+            // 
+            // label5
+            // 
+            this.label5.AutoSize = true;
+            this.label5.Location = new System.Drawing.Point(126, 92);
+            this.label5.Name = "label5";
+            this.label5.Size = new System.Drawing.Size(30, 13);
+            this.label5.TabIndex = 68;
+            this.label5.Text = "CNH";
             // 
             // FrmVendedores
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(586, 188);
+            this.ClientSize = new System.Drawing.Size(586, 348);
+            this.Controls.Add(this.label5);
+            this.Controls.Add(this.txtCNH);
+            this.Controls.Add(this.btRemoverPraça);
+            this.Controls.Add(this.dgvPraças);
             this.Controls.Add(this.panel1);
             this.Controls.Add(this.label4);
-            this.Controls.Add(this.txtPraça);
-            this.Controls.Add(this.txtIdPraça);
             this.Controls.Add(this.label3);
             this.Controls.Add(this.txtNomePessoa);
             this.Controls.Add(this.txtIdPessoa);
-            this.Controls.Add(this.btSearchPraça);
+            this.Controls.Add(this.btAddPraça);
             this.Controls.Add(this.txtPlaca);
             this.Controls.Add(this.label2);
             this.Controls.Add(this.btSearchPessoa);
             this.Controls.Add(this.txtID);
             this.Controls.Add(this.label1);
-            this.Controls.Add(this.label13);
             this.Controls.Add(this.btLimpar);
             this.Controls.Add(this.btSalvar);
             this.Controls.Add(this.label11);
@@ -356,6 +390,7 @@
             this.Text = "Vendedor";
             this.panel1.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.errorProvider)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.dgvPraças)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -366,19 +401,15 @@
         private System.Windows.Forms.Label label11;
         private System.Windows.Forms.Button btSalvar;
         private System.Windows.Forms.Button btLimpar;
-        private System.Windows.Forms.Label label13;
         private System.Windows.Forms.Label label1;
         private System.Windows.Forms.TextBox txtID;
         private System.Windows.Forms.Button btSearchPessoa;
         private System.Windows.Forms.TextBox txtPlaca;
         private System.Windows.Forms.Label label2;
-        private System.Windows.Forms.Button btSearchPraça;
         private System.Windows.Forms.TextBox txtIdPessoa;
         private System.Windows.Forms.TextBox txtNomePessoa;
         private System.Windows.Forms.Label label3;
-        private System.Windows.Forms.TextBox txtIdPraça;
         private System.Windows.Forms.Label label4;
-        private System.Windows.Forms.TextBox txtPraça;
         private System.Windows.Forms.Button btAlterar;
         private System.Windows.Forms.Button btExcluir;
         private System.Windows.Forms.Button btAdd;
@@ -389,5 +420,12 @@
         private System.Windows.Forms.Button btPrimeiro;
         private System.Windows.Forms.Panel panel1;
         private System.Windows.Forms.ErrorProvider errorProvider;
+        private System.Windows.Forms.DataGridView dgvPraças;
+        private System.Windows.Forms.Button btRemoverPraça;
+        private System.Windows.Forms.Button btAddPraça;
+        private System.Windows.Forms.Label label5;
+        private System.Windows.Forms.TextBox txtCNH;
+        private System.Windows.Forms.DataGridViewTextBoxColumn txtCodigo;
+        private System.Windows.Forms.DataGridViewTextBoxColumn txtNome;
     }
 }

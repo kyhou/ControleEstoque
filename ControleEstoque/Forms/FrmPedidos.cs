@@ -36,12 +36,12 @@ namespace ControleEstoque
 
         List<string> parameters = new List<string>
         {
-            "PessoaID", "VendedorID", "DataEmissão", "TotalUnidades", "TotalItens", "Comissão", "DataRetorno"
+            "PessoaID", "VendedorID", "PraçaID", "DataEmissão", "TotalUnidades", "TotalItens", "Comissão", "DataRetorno"
         };
 
         List<string> ItemParameters = new List<string>
         {
-            "PedidoId", "ProdutoId", "Quantidade", "Entregue", "Devolvido", "Vendido", "PreçoTotal"
+            "PedidoId", "ProdutoId", "Entregue", "Devolvido", "Vendido", "PreçoTotal"
         };
 
         public FrmPedidos()
@@ -60,11 +60,12 @@ namespace ControleEstoque
             txtCPF.Enabled = false;
             txtDataNascimento.Enabled = false;
             txtTelefone.Enabled = false;
-            txtIndicacao.Enabled = false;
+            txtPontoReferencia.Enabled = false;
             txtEndereco.Enabled = false;
             txtNumero.Enabled = false;
             txtBairro.Enabled = false;
             txtCidade.Enabled = false;
+            txtEstado.Enabled = false;
 
             dgvItens.Enabled = false;
             txtDataEmissão.Enabled = false;
@@ -87,6 +88,9 @@ namespace ControleEstoque
             btAdd.Enabled = false;
             btExcluir.Enabled = false;
             btAlterar.Enabled = false;
+            btConfirmarVenda.Enabled = false;
+            cbAtivo.Enabled = false;
+            cbPraça.Enabled = false;
         }
 
         private void AtivarCampos()
@@ -96,11 +100,12 @@ namespace ControleEstoque
             txtCPF.Enabled = true;
             txtDataNascimento.Enabled = true;
             txtTelefone.Enabled = true;
-            txtIndicacao.Enabled = true;
+            txtPontoReferencia.Enabled = true;
             txtEndereco.Enabled = true;
             txtNumero.Enabled = true;
             txtBairro.Enabled = true;
-            txtCidade.Enabled = true;*/
+            txtCidade.Enabled = true;
+            cbAtivo.Enabled = true;*/
 
             dgvItens.Enabled = true;
             txtDataEmissão.Enabled = true;
@@ -123,6 +128,8 @@ namespace ControleEstoque
             btAdd.Enabled = true;
             btExcluir.Enabled = true;
             btAlterar.Enabled = true;
+            btConfirmarVenda.Enabled = true;
+            cbPraça.Enabled = true; 
         }
 
         private void LimparCampos()
@@ -136,11 +143,12 @@ namespace ControleEstoque
             txtCPF.Text = "";
             txtDataNascimento.Text = "";
             txtTelefone.Text = "";
-            txtIndicacao.Text = "";
+            txtPontoReferencia.Text = "";
             txtEndereco.Text = "";
             txtNumero.Text = "";
             txtBairro.Text = "";
             txtCidade.Text = "";
+            txtEstado.Text = "";
 
             dgvItens.Rows.Clear();
 
@@ -149,18 +157,19 @@ namespace ControleEstoque
             txtIdVendedor.Text = "";
             txtNomeVendedor.Text = "";
             txtTelefoneVendedor.Text = "";
-            txtPraçaVendedor.Text = "";
+            //txtPraçaVendedor.Text = "";
+            cbPraça.Items.Clear();
             txtTotalItens.Text = "";
             txtTotalPeças.Text = "";
             txtComissão.Text = "";
             txtComissãoValor.Text = "";
             txtPreçoFinal.Text = "";
+            cbAtivo.Checked = false;
+            cbPraça.Items.Clear();
         }
 
         private void ShowSelected(PedidoModelo modelo)
         {
-            decimal valorTotalFinal = 0;
-
             txtID.Text = modelo.Id.ToString();
 
             txtIdPessoa.Text = modelo.PessoaID.ToString();
@@ -171,13 +180,49 @@ namespace ControleEstoque
             txtCPF.Text = pessoa.CPF;
             txtDataNascimento.Text = pessoa.Nascimento.ToShortDateString();
             txtTelefone.Text = pessoa.Telefone;
-            txtIndicacao.Text = pessoa.Indicacao.ToString();
+            txtPontoReferencia.Text = pessoa.PontoReferencia.ToString();
             txtEndereco.Text = pessoa.Endereco;
             txtNumero.Text = pessoa.Numero.ToString();
             txtBairro.Text = pessoa.Bairro;
             txtCidade.Text = pessoa.Cidade;
+            txtEstado.Text = pessoa.Estado;
+            cbAtivo.Checked = pessoa.Ativo;
 
             ItensList = SqliteAcessoDados.LoadQuery<ItemModelo>("select * from Item where Item.PedidoID == " + modelo.Id.ToString());
+
+            RefreshItensList();
+
+            txtDataEmissão.Text = modelo.DataEmissão.ToShortDateString();
+            txtDataRetorno.Text = modelo.DataRetorno.ToShortDateString();
+            txtIdVendedor.Text = modelo.VendedorID.ToString();
+
+            VendedorModelo vendedor = SqliteAcessoDados.LoadQuery<VendedorModelo>("select * from Vendedor where Vendedor.ID == " + modelo.VendedorID.ToString())[0];
+            pessoa = SqliteAcessoDados.LoadQuery<PessoaModelo>("select * from Pessoa where Pessoa.ID == " + vendedor.PessoaId.ToString())[0];
+            List<VendedorPraçaModelo> vendedorPraçaList = SqliteAcessoDados.LoadQuery<VendedorPraçaModelo>("select * from VendedorPraça where VendedorPraça.VendedorID == " + modelo.VendedorID.ToString());
+
+            txtNomeVendedor.Text = pessoa.Nome;
+            txtTelefoneVendedor.Text = pessoa.Telefone;
+
+            foreach (VendedorPraçaModelo vendedorPraça in vendedorPraçaList)
+            {
+                PraçaModelo praça = SqliteAcessoDados.LoadQuery<PraçaModelo>("select * from Praça where Praça.ID == " + vendedorPraça.PraçaId.ToString()).First();
+                cbPraça.Items.Add(praça.Id + " - " + praça.Nome);
+                if (praça.Id == modelo.PraçaID)
+                {
+                    cbPraça.SelectedIndex = cbPraça.Items.Count - 1;
+                }
+            }
+
+            txtTotalItens.Text = modelo.TotalItens.ToString();
+            txtTotalPeças.Text = modelo.TotalUnidades.ToString();
+            txtComissão.Text = modelo.Comissão.ToString();
+            //txtComissãoValor.Text = "add logica";
+        }
+
+        private void RefreshItensList()
+        {
+            decimal valorTotalFinal = 0;
+
             ProdutoModelo produto = new ProdutoModelo();
 
             dgvItens.Rows.Clear();
@@ -191,43 +236,41 @@ namespace ControleEstoque
 
                 dgvItens.Rows[i].Cells["txtDescrição"].Value = produto.Descrição;
                 dgvItens.Rows[i].Cells["txtUnidade"].Value = produto.Unidade;
-                dgvItens.Rows[i].Cells["txtQuantidade"].Value = ItensList[i].Quantidade;
+                dgvItens.Rows[i].Cells["txtEntregue"].Value = ItensList[i].Entregue;
+                dgvItens.Rows[i].Cells["txtDevolvido"].Value = ItensList[i].Devolvido;
+                dgvItens.Rows[i].Cells["txtVendido"].Value = ItensList[i].Vendido;
                 dgvItens.Rows[i].Cells["txtPreçoVenda"].Value = string.Format("{0:C}", produto.PreçoVenda);
                 dgvItens.Rows[i].Cells["txtPreçoTotalItem"].Value = string.Format("{0:C}", ItensList[i].PreçoTotal);
 
                 valorTotalFinal += ItensList[i].PreçoTotal;
             }
 
-            txtDataEmissão.Text = modelo.DataEmissão.ToShortDateString();
-            txtDataRetorno.Text = modelo.DataRetorno.ToShortDateString();
-            txtIdVendedor.Text = modelo.VendedorID.ToString();
-
-            VendedorModelo vendedor = SqliteAcessoDados.LoadQuery<VendedorModelo>("select * from Vendedor where Vendedor.ID == " + modelo.VendedorID.ToString())[0];
-            pessoa = SqliteAcessoDados.LoadQuery<PessoaModelo>("select * from Pessoa where Pessoa.ID == " + vendedor.PessoaId.ToString())[0];
-            PraçaModelo praça = SqliteAcessoDados.LoadQuery<PraçaModelo>("select * from Praça where Praça.ID == " + vendedor.PraçaId.ToString())[0];
-
-            txtNomeVendedor.Text = pessoa.Nome;
-            txtTelefoneVendedor.Text = pessoa.Telefone;
-            txtPraçaVendedor.Text = praça.Nome;
-
-            txtTotalItens.Text = modelo.TotalItens.ToString();
-            txtTotalPeças.Text = modelo.TotalUnidades.ToString();
-            txtComissão.Text = modelo.Comissão.ToString();
-            txtComissãoValor.Text = "add logica";
-
             txtPreçoFinal.Text = string.Format("{0:C}", valorTotalFinal);
         }
 
         private bool Validation()
         {
-            int resultInt = 0;
+            //int resultInt = 0;
             bool result = false;
 
             errorProvider.Clear();
 
-            //errorProvider.SetIconAlignment(txtIndicacao, ErrorIconAlignment.MiddleRight);
+            /*List<ItemModelo> Itens = new List<ItemModelo>();
 
-            //bool teste = txtIndicacao.Text.Any(c => char.IsDigit(c));
+            for (int i = 0; i < dgvItens.Rows.Count - 1; i++)
+            {
+                if (dgvItens.Rows[i].Cells["txtEntregue"].Value.ToString() == "")
+                {
+                    errorProvider.SetError(dgvItens, "");
+                    result = true;
+                }
+            }*/
+            /*
+            
+
+            //errorProvider.SetIconAlignment(txtPontoReferencia, ErrorIconAlignment.MiddleRight);
+
+            //bool teste = txtPontoReferencia.Text.Any(c => char.IsDigit(c));
 
             if (txtCPF.Text.Length != 11)
             {
@@ -249,9 +292,9 @@ namespace ControleEstoque
                 result = true;
             }
 
-            if (!int.TryParse(txtIndicacao.Text, out resultInt))
+            if (!int.TryParse(txtPontoReferencia.Text, out resultInt))
             {
-                errorProvider.SetError(txtIndicacao, "Somente Números");
+                errorProvider.SetError(txtPontoReferencia, "Somente Números");
                 result = true;
             }
 
@@ -259,7 +302,7 @@ namespace ControleEstoque
             {
                 errorProvider.SetError(txtNumero, "Somente Números");
                 result = true;
-            }
+            }*/
 
             return result;
         }
@@ -271,6 +314,7 @@ namespace ControleEstoque
                 Id = int.Parse(txtID.Text),
                 PessoaID = int.Parse(txtIdPessoa.Text),
                 VendedorID = int.Parse(txtIdVendedor.Text),
+                PraçaID = int.Parse(cbPraça.SelectedItem.ToString().Split('-').First()),
                 DataEmissão = DateTime.Parse(txtDataEmissão.Text),
                 TotalUnidades = int.Parse(txtTotalPeças.Text),
                 TotalItens = int.Parse(txtTotalItens.Text),
@@ -296,11 +340,9 @@ namespace ControleEstoque
                 {
                     PedidoId = int.Parse(txtID.Text),
                     ProdutoId = int.Parse(dgvItens.Rows[i].Cells["txtIdProduto"].Value.ToString()),
-                    Quantidade = int.Parse(dgvItens.Rows[i].Cells["txtQuantidade"].Value.ToString()),
-                    //Comissão = int.Parse(dgvItens.Rows[i].Cells["txtQuantidade"].Value.ToString()),
-                    Entregue = 0,
-                    Devolvido = 0,
-                    Vendido = 0,
+                    Entregue = int.Parse(dgvItens.Rows[i].Cells["txtEntregue"].Value.ToString()),   
+                    Devolvido = int.Parse(dgvItens.Rows[i].Cells["txtDevolvido"].Value.ToString()),
+                    Vendido = int.Parse(dgvItens.Rows[i].Cells["txtVendido"].Value.ToString()),
                     PreçoTotal = decimal.Parse(dgvItens.Rows[i].Cells["txtPreçoTotalItem"].Value.ToString().Replace("R$ ", ""))
                 });
             }
@@ -335,7 +377,18 @@ namespace ControleEstoque
 
         private void btLimpar_Click(object sender, EventArgs e)
         {
-            DialogResult result = MessageBox.Show("Limpar todos os campos?", "Confirmar", MessageBoxButtons.YesNo);
+            string msg;
+
+            if (!isEditing)
+            {
+                msg = "Deseja limpar todos os campos?";
+            }
+            else
+            {
+                msg = "Deseja cancelar a edição do registro?";
+            }
+
+            DialogResult result = MessageBox.Show(msg, "Confirmar", MessageBoxButtons.YesNo);
             if (result == DialogResult.Yes)
             {
                 DesativarCampos();
@@ -348,11 +401,21 @@ namespace ControleEstoque
                 }
                 else
                 {
+                    LimparCampos();
+                    ShowSelected(Pedidos[AtualID]);
                     btAlterar.Enabled = true;
                     btExcluir.Enabled = true;
                 }
 
                 isEditing = false;
+            }
+
+            if (Pedidos != null && Pedidos.Count > 1)
+            {
+                btAnterior.Enabled = true;
+                btUltimo.Enabled = true;
+                btPrimeiro.Enabled = true;
+                btProximo.Enabled = true;
             }
         }
 
@@ -407,6 +470,14 @@ namespace ControleEstoque
 
                     isEditing = false;
                 }
+            }
+
+            if (Pedidos != null && Pedidos.Count > 1)
+            {
+                btAnterior.Enabled = true;
+                btUltimo.Enabled = true;
+                btPrimeiro.Enabled = true;
+                btProximo.Enabled = true;
             }
         }
 
@@ -501,7 +572,7 @@ namespace ControleEstoque
         {
             List<string> parameters = new List<string>
             {
-                "Placa", "PessoaID", "PraçaID"
+                "PessoaID", "Placa", "CNH"
             };
 
             using (var form = new FrmProcura("Vendedor", parameters))
@@ -513,8 +584,16 @@ namespace ControleEstoque
 
                     txtIdVendedor.Text = ResultadoPesquisaVendedor.Id.ToString();
                     txtNomeVendedor.Text = SqliteAcessoDados.LoadQuery<PessoaModelo>("select Nome from Pessoa where Pessoa.ID == " + ResultadoPesquisaVendedor.PessoaId.ToString())[0].Nome;
-                    txtPraçaVendedor.Text = SqliteAcessoDados.LoadQuery<PraçaModelo>("select Nome from Praça where Praça.ID == " + ResultadoPesquisaVendedor.PraçaId.ToString())[0].Nome;
+                    //txtPraçaVendedor.Text = SqliteAcessoDados.LoadQuery<PraçaModelo>("select Nome from Praça where Praça.ID == " + ResultadoPesquisaVendedor.PraçaId.ToString())[0].Nome;
                     txtTelefoneVendedor.Text = SqliteAcessoDados.LoadQuery<PessoaModelo>("select Telefone from Pessoa where Pessoa.ID == " + ResultadoPesquisaVendedor.PessoaId.ToString())[0].Telefone.ToString();
+
+                    List<VendedorPraçaModelo> vendedorPraça = SqliteAcessoDados.LoadQuery<VendedorPraçaModelo>("select * from VendedorPraça where VendedorPraça.VendedorID == " + ResultadoPesquisaVendedor.Id.ToString());
+
+                    foreach (VendedorPraçaModelo modelo in vendedorPraça)
+                    {
+                        PraçaModelo praça = SqliteAcessoDados.LoadQuery<PraçaModelo>("select * from Praça where Praça.ID == " + modelo.PraçaId.ToString()).First();
+                        cbPraça.Items.Add(praça.Id + " - " + praça.Nome);
+                    }
                 }
             }
         }
@@ -523,7 +602,7 @@ namespace ControleEstoque
         {
             List<string> parameters = new List<string>
             {
-                "Nome", "Nascimento", "RG", "CPF", "Telefone", "Indicacao", "Endereco", "Numero", "Bairro", "Cidade"
+                "Nome", "Nascimento", "RG", "CPF", "Telefone", "PontoReferencia", "Endereco", "Numero", "Bairro", "Cidade", "Estado", "Ativo"
             };
 
             using (var form = new FrmProcura("Pessoa", parameters))
@@ -539,11 +618,13 @@ namespace ControleEstoque
                     txtCPF.Text = ResultadoPesquisaPessoa.CPF;
                     txtDataNascimento.Text = ResultadoPesquisaPessoa.Nascimento.ToShortDateString();
                     txtTelefone.Text = ResultadoPesquisaPessoa.Telefone;
-                    txtIndicacao.Text = ResultadoPesquisaPessoa.Indicacao.ToString();
+                    txtPontoReferencia.Text = ResultadoPesquisaPessoa.PontoReferencia;
                     txtEndereco.Text = ResultadoPesquisaPessoa.Endereco;
                     txtNumero.Text = ResultadoPesquisaPessoa.Numero.ToString();
                     txtBairro.Text = ResultadoPesquisaPessoa.Bairro;
                     txtCidade.Text = ResultadoPesquisaPessoa.Cidade;
+                    txtEstado.Text = ResultadoPesquisaPessoa.Estado;
+                    cbAtivo.Checked = ResultadoPesquisaPessoa.Ativo;
                 }
             }
         }
@@ -593,7 +674,7 @@ namespace ControleEstoque
             var senderGrid = (DataGridView)sender;
             DataGridViewCell preçoVendaCell = senderGrid.Rows[e.RowIndex].Cells["txtPreçoVenda"];
             DataGridViewCell preçoTotalCell = senderGrid.Rows[e.RowIndex].Cells["txtPreçoTotalItem"];
-            DataGridViewCell quantidadeCell = senderGrid.Rows[e.RowIndex].Cells["txtQuantidade"];
+            DataGridViewCell vendidoCell = senderGrid.Rows[e.RowIndex].Cells["txtVendido"];
 
             if (senderGrid.Columns[e.ColumnIndex].Name == "txtPreçoVenda" && preçoVendaCell.Value != null)
             {
@@ -601,10 +682,10 @@ namespace ControleEstoque
                 {
                     preçoVendaCell.Value = string.Format("{0:C}", preçoVenda);
 
-                    if (quantidadeCell.Value != null) {
-                        if (int.TryParse(quantidadeCell.Value.ToString().Replace("R$ ", ""), out int quantidade))
+                    if (vendidoCell.Value != null) {
+                        if (int.TryParse(vendidoCell.Value.ToString().Replace("R$ ", ""), out int vendido))
                         {
-                            preçoTotalCell.Value = quantidade * preçoVenda;
+                            preçoTotalCell.Value = vendido * preçoVenda;
                         }
                     }
                 }
@@ -613,34 +694,34 @@ namespace ControleEstoque
                     preçoVendaCell.Value = "";
                 }
             }
-            else if (senderGrid.Columns[e.ColumnIndex].Name == "txtQuantidade" && quantidadeCell.Value != null)
+            else if (senderGrid.Columns[e.ColumnIndex].Name == "txtVendido" && vendidoCell.Value != null)
             {
-                if (int.TryParse(quantidadeCell.Value.ToString().Replace("R$ ", ""), out int quantidade))
+                if (int.TryParse(vendidoCell.Value.ToString().Replace("R$ ", ""), out int vendido))
                 {
                     if (preçoVendaCell.Value != null)
                     {
                         if (decimal.TryParse(preçoVendaCell.Value.ToString().Replace("R$ ", ""), out decimal preçoVenda))
                         {
-                            preçoTotalCell.Value = quantidade * preçoVenda;
+                            preçoTotalCell.Value = vendido * preçoVenda;
                         }
                     }
                 }
             }
 
-            int quantidadeTemp = 0;
+            int vendidoTemp = 0;
             decimal preçoTotalFinal = 0;
 
             foreach (DataGridViewRow row in senderGrid.Rows)
             {
-                if (row.Cells["txtQuantidade"].Value != null)
+                if (row.Cells["txtVendido"].Value != null)
                 {
-                    quantidadeTemp += int.Parse(row.Cells["txtQuantidade"].Value.ToString());
+                    vendidoTemp += int.Parse(row.Cells["txtVendido"].Value.ToString());
                     preçoTotalFinal += decimal.Parse(row.Cells["txtPreçoTotalItem"].Value.ToString().Replace("R$ ", ""));
                 }
             }
 
             txtPreçoFinal.Text = string.Format("{0:C}", preçoTotalFinal);
-            txtTotalPeças.Text = quantidadeTemp.ToString();
+            txtTotalPeças.Text = vendidoTemp.ToString();
         }
 
         private void DgvItem_CellBeginEdit(object sender, DataGridViewCellCancelEventArgs e)
@@ -684,6 +765,26 @@ namespace ControleEstoque
                 {
                     totalItensTemp++;
                 }
+
+                if (row.Cells["txtEntregue"].Value == null)
+                {
+                    row.Cells["txtEntregue"].Value = 0;
+                }
+
+                if (row.Cells["txtDevolvido"].Value == null)
+                {
+                    row.Cells["txtDevolvido"].Value = 0;
+                }
+
+                if (row.Cells["txtVendido"].Value == null)
+                {
+                    row.Cells["txtVendido"].Value = 0;
+                }
+
+                if(row.Cells["txtPreçoTotalItem"].Value == null)
+                {
+                    row.Cells["txtPreçoTotalItem"].Value = 0;
+                }
             }
 
             txtTotalItens.Text = totalItensTemp.ToString();
@@ -703,20 +804,20 @@ namespace ControleEstoque
         {
             var senderGrid = (DataGridView)sender;
 
-            int quantidadeTemp = 0;
+            int vendidoTemp = 0;
             decimal preçoTotalFinal = 0;
 
             foreach (DataGridViewRow row in senderGrid.Rows)
             {
-                if (row.Cells["txtQuantidade"].Value != null)
+                if (row.Cells["txtVendido"].Value != null)
                 {
-                    quantidadeTemp += int.Parse(row.Cells["txtQuantidade"].Value.ToString());
+                    vendidoTemp += int.Parse(row.Cells["txtVendido"].Value.ToString());
                     preçoTotalFinal += decimal.Parse(row.Cells["txtPreçoTotalItem"].Value.ToString().Replace("R$ ", ""));
                 }
             }
 
             txtPreçoFinal.Text = string.Format("{0:C}", preçoTotalFinal);
-            txtTotalPeças.Text = quantidadeTemp.ToString();
+            txtTotalPeças.Text = vendidoTemp.ToString();
         }
 
         private void TxtComissão_Leave(object sender, EventArgs e)
@@ -729,27 +830,30 @@ namespace ControleEstoque
 
         private void txtPreçoFinal_TextChanged(object sender, EventArgs e)
         {
-            decimal preçoFinal = decimal.Parse(txtPreçoFinal.Text.Replace("R$ ", ""));
+            decimal preçoFinal = 0;
+            if (decimal.TryParse(txtPreçoFinal.Text.Replace("R$ ", ""), out preçoFinal))
+            {
 
-            if (preçoFinal <= (decimal)89.99)
-            {
-                txtComissão.Text = "20";
-            }
-            else if(preçoFinal > (decimal)89.99 && preçoFinal <= (decimal)169.99)
-            {
-                txtComissão.Text = "25";
-            }
-            else if(preçoFinal > (decimal)169.99 && preçoFinal <= 600)
-            {
-                txtComissão.Text = "30";
-            }
-            else if(preçoFinal > 600 && preçoFinal < 990)
-            {
-                txtComissão.Text = "35";
-            }
-            else if(preçoFinal > 990)
-            {
-                txtComissão.Text = "40";
+                if (preçoFinal <= (decimal)89.99)
+                {
+                    txtComissão.Text = "20";
+                }
+                else if (preçoFinal > (decimal)89.99 && preçoFinal <= (decimal)169.99)
+                {
+                    txtComissão.Text = "25";
+                }
+                else if (preçoFinal > (decimal)169.99 && preçoFinal <= 600)
+                {
+                    txtComissão.Text = "30";
+                }
+                else if (preçoFinal > 600 && preçoFinal < 990)
+                {
+                    txtComissão.Text = "35";
+                }
+                else if (preçoFinal > 990)
+                {
+                    txtComissão.Text = "40";
+                }
             }
 
             TxtComissão_Leave(null, null);

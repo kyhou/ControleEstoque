@@ -31,7 +31,7 @@ namespace ControleEstoque
 
         List<string> parameters = new List<string>
         {
-            "Nome", "Nascimento", "RG", "CPF", "Telefone", "Indicacao", "Endereco", "Numero", "Bairro", "Cidade"
+            "Nome", "Nascimento", "RG", "CPF", "Telefone", "PontoReferencia", "Endereco", "Numero", "Bairro", "Cidade", "Estado", "Ativo"
         };
 
         public FrmPessoas()
@@ -50,11 +50,12 @@ namespace ControleEstoque
             txtCPF.Enabled = false;
             txtDataNascimento.Enabled = false;
             txtTelefone.Enabled = false;
-            txtIndicacao.Enabled = false;
+            txtPontoReferencia.Enabled = false;
             txtEndereco.Enabled = false;
             txtNumero.Enabled = false;
             txtBairro.Enabled = false;
             txtCidade.Enabled = false;
+            txtEstado.Enabled = false;
             btPrimeiro.Enabled = false;
             btPesquisar.Enabled = false;
             btUltimo.Enabled = false;
@@ -65,6 +66,7 @@ namespace ControleEstoque
             btAdd.Enabled = false;
             btExcluir.Enabled = false;
             btAlterar.Enabled = false;
+            cbAtivo.Enabled = false;
         }
 
         private void AtivarCampos()
@@ -74,11 +76,12 @@ namespace ControleEstoque
             txtCPF.Enabled = true;
             txtDataNascimento.Enabled = true;
             txtTelefone.Enabled = true;
-            txtIndicacao.Enabled = true;
+            txtPontoReferencia.Enabled = true;
             txtEndereco.Enabled = true;
             txtNumero.Enabled = true;
             txtBairro.Enabled = true;
             txtCidade.Enabled = true;
+            txtEstado.Enabled = true;
             btPrimeiro.Enabled = true;
             btPesquisar.Enabled = true;
             btUltimo.Enabled = true;
@@ -89,6 +92,7 @@ namespace ControleEstoque
             btAdd.Enabled = true;
             btExcluir.Enabled = true;
             btAlterar.Enabled = true;
+            cbAtivo.Enabled = true;
         }
 
         private void LimparCampos()
@@ -100,11 +104,13 @@ namespace ControleEstoque
             txtCPF.Text = "";
             txtDataNascimento.Text = "";
             txtTelefone.Text = "";
-            txtIndicacao.Text = "";
+            txtPontoReferencia.Text = "";
             txtEndereco.Text = "";
             txtNumero.Text = "";
             txtBairro.Text = "";
             txtCidade.Text = "";
+            txtEstado.Text = "";
+            cbAtivo.Checked = false;
         }
 
         private void ShowSelected(PessoaModelo modelo)
@@ -115,11 +121,13 @@ namespace ControleEstoque
             txtCPF.Text = modelo.CPF;
             txtDataNascimento.Text = modelo.Nascimento.ToShortDateString();
             txtTelefone.Text = modelo.Telefone;
-            txtIndicacao.Text = modelo.Indicacao.ToString();
+            txtPontoReferencia.Text = modelo.PontoReferencia.ToString();
             txtEndereco.Text = modelo.Endereco;
             txtNumero.Text = modelo.Numero.ToString();
             txtBairro.Text = modelo.Bairro;
             txtCidade.Text = modelo.Cidade;
+            txtEstado.Text = modelo.Estado;
+            cbAtivo.Checked = modelo.Ativo ? true : false;
         }
 
         private bool Validation()
@@ -129,9 +137,9 @@ namespace ControleEstoque
             
             errorProvider.Clear();
 
-            //errorProvider.SetIconAlignment(txtIndicacao, ErrorIconAlignment.MiddleRight);
+            //errorProvider.SetIconAlignment(txtPontoReferencia, ErrorIconAlignment.MiddleRight);
 
-            //bool teste = txtIndicacao.Text.Any(c => char.IsDigit(c));
+            //bool teste = txtPontoReferencia.Text.Any(c => char.IsDigit(c));
 
             if (txtCPF.Text.Length != 11)
             {
@@ -142,8 +150,19 @@ namespace ControleEstoque
             {
                 if (FuncoesAuxiliares.ValidarCPF(txtCPF.Text))
                 {
-                    errorProvider.SetError(txtCPF, "Insira um CPF válido");                    
+                    errorProvider.SetError(txtCPF, "Insira um CPF válido");
                     result = true;
+                }
+                else
+                {
+                    if (!isEditing)
+                    {
+                        if (SqliteAcessoDados.RegistroExiste<PessoaModelo>("Pessoa", "CPF", txtCPF.Text))
+                        {
+                            errorProvider.SetError(txtCPF, "CPF já cadastrado");
+                            result = true;
+                        }
+                    }
                 }
             }
 
@@ -153,11 +172,11 @@ namespace ControleEstoque
                 result = true;
             }
 
-            if (!int.TryParse(txtIndicacao.Text, out resultInt))
+            /*if (!int.TryParse(txtPontoReferencia.Text, out resultInt))
             {
-                errorProvider.SetError(txtIndicacao, "Somente Números");
+                errorProvider.SetError(txtPontoReferencia, "Somente Números");
                 result = true;
-            }
+            }*/
 
             if (!int.TryParse(txtNumero.Text, out resultInt))
             {
@@ -177,11 +196,13 @@ namespace ControleEstoque
                 RG = txtRG.Text,
                 CPF = txtCPF.Text,
                 Telefone = txtTelefone.Text,
-                Indicacao = int.Parse(txtIndicacao.Text),
+                PontoReferencia = txtPontoReferencia.Text,
                 Endereco = txtEndereco.Text,
                 Numero = int.Parse(txtNumero.Text),
                 Bairro = txtBairro.Text,
-                Cidade = txtCidade.Text
+                Cidade = txtCidade.Text,
+                Estado = txtEstado.Text,
+                Ativo = cbAtivo.Checked ? true : false
             };
 
             if (isEditing)
@@ -209,14 +230,26 @@ namespace ControleEstoque
             btProximo.Enabled = false;
 
             LimparCampos();
-
+            
             int ID = SqliteAcessoDados.GetLastID("Pessoa");
             txtID.Text = (ID + 1).ToString();
+            cbAtivo.Checked = true;
         }
 
         private void btLimpar_Click(object sender, EventArgs e)
         {
-            DialogResult result = MessageBox.Show("Limpar todos os campos?", "Confirmar", MessageBoxButtons.YesNo);
+            string msg;
+
+            if (!isEditing)
+            {
+                msg = "Deseja limpar todos os campos?";
+            }
+            else
+            {
+                msg = "Deseja cancelar a edição do registro?";
+            }
+
+            DialogResult result = MessageBox.Show(msg, "Confirmar", MessageBoxButtons.YesNo);
             if (result == DialogResult.Yes)
             {
                 DesativarCampos();
@@ -319,6 +352,7 @@ namespace ControleEstoque
                 isEditing = true;
                 AtivarCampos();
 
+                txtCPF.Enabled = false;
                 btAlterar.Enabled = false;
                 btExcluir.Enabled = false;
                 btPesquisar.Enabled = false;

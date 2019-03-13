@@ -75,6 +75,7 @@
     </Compile>
     <Compile Include="Modelos\PraçaModelo.cs" />
     <Compile Include="Modelos\ProdutoModelo.cs" />
+    <Compile Include="Modelos\VendedorPraçaModelo.cs" />
     <Compile Include="Modelos\VendedorModelo.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="SqliteAcessoDados.cs" />

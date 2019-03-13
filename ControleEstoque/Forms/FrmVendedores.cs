@@ -17,6 +17,8 @@ namespace ControleEstoque
         public VendedorModelo ResultadoPesquisaVendedor { get; set; }
         public PraçaModelo ResultadoPesquisaPraça { get; set; }
         public PessoaModelo ResultadoPesquisaPessoa { get; set; }
+        public VendedorPraçaModelo ResultadoVendedorPraça { get; set; }
+        public List<VendedorPraçaModelo> VendedorPraçaList { get; set; }
 
         private bool isEditing = false;
         private int _atualID;
@@ -31,9 +33,14 @@ namespace ControleEstoque
             }
         }
 
-        List<string> parameters = new List<string>
+        List<string> VendedorParameters = new List<string>
         {
-            "Placa", "PessoaID", "PraçaID"
+            "PessoaID", "Placa", "CNH"
+        };
+
+        List<string> VendedorPraçaParameters = new List<string>
+        {
+            "VendedorID", "PraçaID"
         };
 
         public FrmVendedores()
@@ -42,19 +49,27 @@ namespace ControleEstoque
             DesativarCampos();
             btPesquisar.Enabled = true;
             btAdd.Enabled = true;
+
+            VendedorPraçaList = new List<VendedorPraçaModelo>();
         }
 
-        private void ShowSelected(VendedorModelo vendedor)
+        private void ShowSelected(VendedorModelo modelo)
         {
-            txtID.Text = vendedor.Id.ToString();
-            txtIdPessoa.Text = vendedor.PessoaId.ToString();
-            txtIdPraça.Text = vendedor.PraçaId.ToString();
-            txtPlaca.Text = vendedor.Placa;
+            txtID.Text = modelo.Id.ToString();
+            txtIdPessoa.Text = modelo.PessoaId.ToString();
+            VendedorPraçaList = SqliteAcessoDados.LoadQuery<VendedorPraçaModelo>("select * from VendedorPraça where VendedorPraça.VendedorID == " + modelo.Id.ToString());
 
-            BuscaFK(int.Parse(txtIdPessoa.Text), int.Parse(txtIdPraça.Text), out string nomePessoa, out string praça);
+            foreach (VendedorPraçaModelo item in VendedorPraçaList)
+            {
+                BuscaPraçaFK(item.PraçaId, out string praçaNome);
+                dgvPraças.Rows.Add(item.PraçaId, praçaNome);
+            }
+            
+            txtPlaca.Text = modelo.Placa;
+            txtCNH.Text = modelo.CNH.ToString();    
 
+            BuscaPessoaFK(int.Parse(txtIdPessoa.Text), out string nomePessoa);
             txtNomePessoa.Text = nomePessoa;
-            txtPraça.Text = praça;
         }
 
 
@@ -64,9 +79,9 @@ namespace ControleEstoque
 
             errorProvider.Clear();
 
-            //errorProvider.SetIconAlignment(txtIndicacao, ErrorIconAlignment.MiddleRight);
+            //errorProvider.SetIconAlignment(txtPontoReferencia, ErrorIconAlignment.MiddleRight);
 
-            //bool teste = txtIndicacao.Text.Any(c => char.IsDigit(c));
+            //bool teste = txtPontoReferencia.Text.Any(c => char.IsDigit(c));
 
             if (txtNomePessoa.Text == "")
             {
@@ -74,9 +89,9 @@ namespace ControleEstoque
                 result = true;
             }
 
-            if (txtPraça.Text == "")
+            if (dgvPraças.Rows.Count == 0)
             {
-                errorProvider.SetError(txtPraça, "Campo Obrigatório");
+                errorProvider.SetError(dgvPraças, "Campo Obrigatório");
                 result = true;
             }
 
@@ -86,6 +101,11 @@ namespace ControleEstoque
                 result = true;
             }
 
+
+            /*********************
+             * ADD VALIDAÇÂO CNH *
+             *********************/
+
             return result;
         }
 
@@ -94,7 +114,8 @@ namespace ControleEstoque
         {
             txtPlaca.Enabled = false;
             txtNomePessoa.Enabled = false;
-            txtPraça.Enabled = false;
+            dgvPraças.Enabled = false;
+            txtCNH.Enabled = false;
             btPrimeiro.Enabled = false;
             btPesquisar.Enabled = false;
             btUltimo.Enabled = false;
@@ -106,12 +127,15 @@ namespace ControleEstoque
             btExcluir.Enabled = false;
             btAlterar.Enabled = false;
             btSearchPessoa.Enabled = false;
-            btSearchPraça.Enabled = false;
+            btAddPraça.Enabled = false;
+            btRemoverPraça.Enabled = false;
         }
 
         private void AtivarCampos()
         {
             txtPlaca.Enabled = true;
+            txtCNH.Enabled = true;
+            dgvPraças.Enabled = true;
             btPrimeiro.Enabled = true;
             btPesquisar.Enabled = true;
             btUltimo.Enabled = true;
@@ -123,7 +147,8 @@ namespace ControleEstoque
             btExcluir.Enabled = true;
             btAlterar.Enabled = true;
             btSearchPessoa.Enabled = true;
-            btSearchPraça.Enabled = true;
+            btAddPraça.Enabled = true;
+            btRemoverPraça.Enabled = true;
         }
 
         private void LimparCampos()
@@ -132,10 +157,9 @@ namespace ControleEstoque
             txtID.Text = "";
             txtIdPessoa.Text = "";
             txtNomePessoa.Text = "";
-            txtIdPraça.Text = "";
-            txtPraça.Text = "";
+            dgvPraças.Rows.Clear();
             txtPlaca.Text = "";
-
+            txtCNH.Text = "";
         }
 
         private VendedorModelo AddVendedor()
@@ -143,8 +167,8 @@ namespace ControleEstoque
             VendedorModelo modelo = new VendedorModelo
             {
                 PessoaId = int.Parse(txtIdPessoa.Text),
-                PraçaId = int.Parse(txtIdPraça.Text),
-                Placa = txtPlaca.Text
+                Placa = txtPlaca.Text,
+                CNH = int.Parse(txtCNH.Text)
             };
 
             if (isEditing)
@@ -155,12 +179,33 @@ namespace ControleEstoque
             return modelo;
         }
 
-        private void BuscaFK(int idPessoa, int idPraça, out string nomePessoa, out string praça)
+        private List<VendedorPraçaModelo> AddVendedorPraça()
+        {
+            List<VendedorPraçaModelo> vendedorPraças = new List<VendedorPraçaModelo>();
+
+            foreach (DataGridViewRow row in dgvPraças.Rows)
+            {
+                vendedorPraças.Add(new VendedorPraçaModelo
+                {
+                    VendedorId = int.Parse(txtID.Text),
+                    PraçaId = int.Parse(row.Cells["txtCodigo"].Value.ToString())
+                });
+            }
+
+            return vendedorPraças;
+        }
+
+        private void BuscaPessoaFK(int idPessoa, out string nomePessoa)
         {
             nomePessoa = "";
-            praça = "";
 
             nomePessoa = SqliteAcessoDados.LoadQuery<PessoaModelo>("select Nome from Pessoa where ID = " + idPessoa)[0].Nome;
+        }
+
+        private void BuscaPraçaFK(int idPraça, out string praça)
+        {
+            praça = "";
+
             praça = SqliteAcessoDados.LoadQuery<PessoaModelo>("select Nome from Praça where ID = " + idPraça)[0].Nome;
         }
 
@@ -188,7 +233,18 @@ namespace ControleEstoque
 
         private void btLimpar_Click(object sender, EventArgs e)
         {
-            DialogResult result = MessageBox.Show("Limpar todos os campos?", "Confirmar", MessageBoxButtons.YesNo);
+            string msg;
+
+            if (!isEditing)
+            {
+                msg = "Deseja limpar todos os campos?";
+            }
+            else
+            {
+                msg = "Deseja cancelar a edição do registro?";
+            }
+
+            DialogResult result = MessageBox.Show(msg, "Confirmar", MessageBoxButtons.YesNo);
             if (result == DialogResult.Yes)
             {
                 DesativarCampos();
@@ -203,6 +259,9 @@ namespace ControleEstoque
                 {
                     btAlterar.Enabled = true;
                     btExcluir.Enabled = true;
+
+                    LimparCampos();
+                    ShowSelected(Vendedores[AtualID]);
                 }
 
                 isEditing = false;
@@ -228,11 +287,28 @@ namespace ControleEstoque
                 {
                     if (isEditing)
                     {
-                        SqliteAcessoDados.UpdateQuery<VendedorModelo>(AddVendedor(), "Vendedor", parameters);
+                        SqliteAcessoDados.UpdateQuery<VendedorModelo>(AddVendedor(), "Vendedor", VendedorParameters);
+
+                        foreach (VendedorPraçaModelo vendedorPraça in VendedorPraçaList)
+                        {
+                            SqliteAcessoDados.ExcluirQuery(vendedorPraça.VendedorId, "VendedorPraça", "VendedorID");
+                        }
+
+                        VendedorPraçaList = AddVendedorPraça();
+                        foreach (VendedorPraçaModelo vendedorPraça in VendedorPraçaList)
+                        {
+                            SqliteAcessoDados.SaveQuery<VendedorPraçaModelo>(vendedorPraça, "VendedorPraça", VendedorPraçaParameters);
+                        }
                     }
                     else
                     {
-                        SqliteAcessoDados.SaveQuery<VendedorModelo>(AddVendedor(), "Vendedor", parameters);
+                        SqliteAcessoDados.SaveQuery<VendedorModelo>(AddVendedor(), "Vendedor", VendedorParameters);
+
+                        VendedorPraçaList = AddVendedorPraça();
+                        foreach (VendedorPraçaModelo vendedorPraça in VendedorPraçaList)
+                        {
+                            SqliteAcessoDados.SaveQuery<VendedorPraçaModelo>(vendedorPraça, "VendedorPraça", VendedorPraçaParameters);
+                        }
                     }
 
                     DesativarCampos();
@@ -248,7 +324,7 @@ namespace ControleEstoque
 
         private void btPesquisar_Click(object sender, EventArgs e)
         {
-            using (var form = new FrmProcura("Vendedor", parameters))
+            using (var form = new FrmProcura("Vendedor", VendedorParameters))
             {
                 var result = form.ShowDialog();
                 if (result == DialogResult.OK)
@@ -332,7 +408,7 @@ namespace ControleEstoque
         {
             List<string> parameters = new List<string>
             {
-                "Nome", "Nascimento", "RG", "CPF", "Telefone", "Indicacao", "Endereco", "Numero", "Bairro", "Cidade"
+                "Nome", "Nascimento", "RG", "CPF", "Telefone", "PontoReferencia", "Endereco", "Numero", "Bairro", "Cidade", "Estado", "Ativo"
             };
 
             using (var form = new FrmProcura("Pessoa", parameters))
@@ -348,7 +424,7 @@ namespace ControleEstoque
             }
         }
 
-        private void btSearchPraça_Click(object sender, EventArgs e)
+        private void btAddPraça_Click(object sender, EventArgs e)
         {
             List<string> parameters = new List<string>
             {
@@ -362,10 +438,39 @@ namespace ControleEstoque
                 {
                     ResultadoPesquisaPraça = form.TableObjectPraça[form.ResultID];
 
-                    txtIdPraça.Text = ResultadoPesquisaPraça.Id.ToString();
-                    txtPraça.Text = ResultadoPesquisaPraça.Nome;
+                    BuscaPraçaFK(ResultadoPesquisaPraça.Id, out string praça);
+
+                    bool praçaRepetida = false;
+
+                    if (dgvPraças.Rows != null) {
+                        foreach (DataGridViewRow row in dgvPraças.Rows)
+                        {
+                            if (row.Cells["txtCodigo"].Value.ToString() == ResultadoPesquisaPraça.Id.ToString())
+                            {
+                                praçaRepetida = true;
+                            }
+                        }
+                    }
+
+                    if (!praçaRepetida)
+                    {
+                        dgvPraças.Rows.Add(ResultadoPesquisaPraça.Id, praça);
+                    }
+                    else
+                    {
+                        MessageBox.Show("Esta Praça ja está inclusa para este Vendedor.", "Atenção!", MessageBoxButtons.OK);
+                    }
                 }
             }
+        }
+
+        private void btRemoverPraça_Click(object sender, EventArgs e)
+        {
+            foreach (DataGridViewRow row in dgvPraças.SelectedRows)
+            {
+                dgvPraças.Rows.Remove(row);
+            }
+            dgvPraças.ClearSelection();
         }
     }
 }

@@ -11,7 +11,7 @@ namespace ControleEstoqueLibrary
         public int Id { get; set; }
         public int PedidoId { get; set; }
         public int ProdutoId { get; set; }
-        public int Quantidade { get; set; }
+        //public int Quantidade { get; set; }
         //public float Comissão { get; set; }
         public int Entregue { get; set; }
         public int Devolvido { get; set; }

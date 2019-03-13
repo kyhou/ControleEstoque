@@ -11,6 +11,7 @@ namespace ControleEstoqueLibrary
         public int Id { get; set; }
         public int PessoaID { get; set; }
         public int VendedorID { get; set; }
+        public int PraçaID { get; set; }
         public DateTime DataEmissão { get; set; }
         public int TotalUnidades { get; set; }
         public int TotalItens { get; set; }

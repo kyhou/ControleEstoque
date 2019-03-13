@@ -119,6 +119,8 @@
     <Compile Include="Forms\FrmVendedores.Designer.cs">
       <DependentUpon>FrmVendedores.cs</DependentUpon>
     </Compile>
+    <Content Include="Resources\icons8-grupos-de-usuários-100.png" />
+    <None Include="Resources\icons8-plus-16.png" />
     <None Include="Resources\icons8-push-cart-40.png" />
     <None Include="Resources\icons8-new-product-40.png" />
     <None Include="Resources\icons8-businessman-40.png" />
@@ -182,9 +184,6 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="Resources\icons8-adicionar-usuário-masculino-100.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Resources\icons8-grupos-de-usuários-100.png" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Resources\icons8-grupos-de-usuários-80.png" />

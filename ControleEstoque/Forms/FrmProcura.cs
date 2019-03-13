@@ -84,12 +84,10 @@ namespace ControleEstoque
                     TableObjectVendedor = SqliteAcessoDados.GetPesquisarTodos<VendedorModelo>(ReturnQuery(), tableName);
                     dgvResultados.DataSource = TableObjectVendedor;
                     dgvResultados.Columns.Add("NomePessoa", "Nome Pessoa");
-                    dgvResultados.Columns.Add("Praça", "Praça");
 
                     for (int i = 0; i < TableObjectVendedor.Count; i++)
                     {
                         dgvResultados.Rows[i].Cells["NomePessoa"].Value = SqliteAcessoDados.LoadQuery<PessoaModelo>("select Nome from Pessoa where Pessoa.ID == " + TableObjectVendedor[i].PessoaId)[0].Nome;
-                        dgvResultados.Rows[i].Cells["Praça"].Value = SqliteAcessoDados.LoadQuery<PraçaModelo>("select Nome from Praça where Praça.ID == " + TableObjectVendedor[i].PraçaId)[0].Nome;
                     }
                     
                     break;

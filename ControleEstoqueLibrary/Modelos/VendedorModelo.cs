@@ -10,7 +10,7 @@ namespace ControleEstoqueLibrary
     {
         public int Id { get; set; }
         public int PessoaId { get; set; }
-        public int PraçaId { get; set; }
         public string Placa { get; set; }
+        public int CNH { get; set; }
     }
 }

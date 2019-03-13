@@ -60,7 +60,7 @@
             "RG",
             "CPF",
             "Telefone",
-            "Indicacao",
+            "PontoReferencia",
             "Endereco",
             "Numero",
             "Bairro",

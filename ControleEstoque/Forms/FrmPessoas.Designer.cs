@@ -40,7 +40,7 @@
             this.label5 = new System.Windows.Forms.Label();
             this.txtTelefone = new System.Windows.Forms.TextBox();
             this.label6 = new System.Windows.Forms.Label();
-            this.txtIndicacao = new System.Windows.Forms.TextBox();
+            this.txtPontoReferencia = new System.Windows.Forms.TextBox();
             this.label7 = new System.Windows.Forms.Label();
             this.txtEndereco = new System.Windows.Forms.TextBox();
             this.label8 = new System.Windows.Forms.Label();
@@ -50,11 +50,6 @@
             this.txtCidade = new System.Windows.Forms.TextBox();
             this.label10 = new System.Windows.Forms.Label();
             this.panel1 = new System.Windows.Forms.Panel();
-            this.txtID = new System.Windows.Forms.TextBox();
-            this.label14 = new System.Windows.Forms.Label();
-            this.errorProvider = new System.Windows.Forms.ErrorProvider(this.components);
-            this.btLimpar = new System.Windows.Forms.Button();
-            this.btSalvar = new System.Windows.Forms.Button();
             this.btAlterar = new System.Windows.Forms.Button();
             this.btExcluir = new System.Windows.Forms.Button();
             this.btAdd = new System.Windows.Forms.Button();
@@ -63,6 +58,14 @@
             this.btProximo = new System.Windows.Forms.Button();
             this.btAnterior = new System.Windows.Forms.Button();
             this.btPrimeiro = new System.Windows.Forms.Button();
+            this.txtID = new System.Windows.Forms.TextBox();
+            this.label14 = new System.Windows.Forms.Label();
+            this.errorProvider = new System.Windows.Forms.ErrorProvider(this.components);
+            this.btLimpar = new System.Windows.Forms.Button();
+            this.btSalvar = new System.Windows.Forms.Button();
+            this.txtEstado = new System.Windows.Forms.TextBox();
+            this.label11 = new System.Windows.Forms.Label();
+            this.cbAtivo = new System.Windows.Forms.CheckBox();
             this.panel1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.errorProvider)).BeginInit();
             this.SuspendLayout();
@@ -150,23 +153,23 @@
             // label6
             // 
             this.label6.AutoSize = true;
-            this.label6.Location = new System.Drawing.Point(12, 135);
+            this.label6.Location = new System.Drawing.Point(363, 96);
             this.label6.Name = "label6";
-            this.label6.Size = new System.Drawing.Size(54, 13);
+            this.label6.Size = new System.Drawing.Size(105, 13);
             this.label6.TabIndex = 21;
-            this.label6.Text = "Indicação";
+            this.label6.Text = "Ponto de Referência";
             // 
-            // txtIndicacao
+            // txtPontoReferencia
             // 
-            this.txtIndicacao.Location = new System.Drawing.Point(12, 151);
-            this.txtIndicacao.Name = "txtIndicacao";
-            this.txtIndicacao.Size = new System.Drawing.Size(312, 20);
-            this.txtIndicacao.TabIndex = 20;
+            this.txtPontoReferencia.Location = new System.Drawing.Point(363, 112);
+            this.txtPontoReferencia.Name = "txtPontoReferencia";
+            this.txtPontoReferencia.Size = new System.Drawing.Size(347, 20);
+            this.txtPontoReferencia.TabIndex = 20;
             // 
             // label7
             // 
             this.label7.AutoSize = true;
-            this.label7.Location = new System.Drawing.Point(12, 174);
+            this.label7.Location = new System.Drawing.Point(12, 135);
             this.label7.Name = "label7";
             this.label7.Size = new System.Drawing.Size(53, 13);
             this.label7.TabIndex = 23;
@@ -174,7 +177,7 @@
             // 
             // txtEndereco
             // 
-            this.txtEndereco.Location = new System.Drawing.Point(12, 190);
+            this.txtEndereco.Location = new System.Drawing.Point(12, 151);
             this.txtEndereco.Name = "txtEndereco";
             this.txtEndereco.Size = new System.Drawing.Size(312, 20);
             this.txtEndereco.TabIndex = 22;
@@ -182,7 +185,7 @@
             // label8
             // 
             this.label8.AutoSize = true;
-            this.label8.Location = new System.Drawing.Point(341, 174);
+            this.label8.Location = new System.Drawing.Point(341, 135);
             this.label8.Name = "label8";
             this.label8.Size = new System.Drawing.Size(44, 13);
             this.label8.TabIndex = 25;
@@ -190,14 +193,14 @@
             // 
             // txtNumero
             // 
-            this.txtNumero.Location = new System.Drawing.Point(344, 190);
+            this.txtNumero.Location = new System.Drawing.Point(344, 151);
             this.txtNumero.Name = "txtNumero";
             this.txtNumero.Size = new System.Drawing.Size(100, 20);
             this.txtNumero.TabIndex = 26;
             // 
             // txtBairro
             // 
-            this.txtBairro.Location = new System.Drawing.Point(459, 190);
+            this.txtBairro.Location = new System.Drawing.Point(459, 151);
             this.txtBairro.Name = "txtBairro";
             this.txtBairro.Size = new System.Drawing.Size(100, 20);
             this.txtBairro.TabIndex = 28;
@@ -205,7 +208,7 @@
             // label9
             // 
             this.label9.AutoSize = true;
-            this.label9.Location = new System.Drawing.Point(456, 174);
+            this.label9.Location = new System.Drawing.Point(456, 135);
             this.label9.Name = "label9";
             this.label9.Size = new System.Drawing.Size(34, 13);
             this.label9.TabIndex = 27;
@@ -213,7 +216,7 @@
             // 
             // txtCidade
             // 
-            this.txtCidade.Location = new System.Drawing.Point(573, 190);
+            this.txtCidade.Location = new System.Drawing.Point(573, 151);
             this.txtCidade.Name = "txtCidade";
             this.txtCidade.Size = new System.Drawing.Size(100, 20);
             this.txtCidade.TabIndex = 30;
@@ -221,7 +224,7 @@
             // label10
             // 
             this.label10.AutoSize = true;
-            this.label10.Location = new System.Drawing.Point(570, 174);
+            this.label10.Location = new System.Drawing.Point(570, 135);
             this.label10.Name = "label10";
             this.label10.Size = new System.Drawing.Size(40, 13);
             this.label10.TabIndex = 29;
@@ -240,55 +243,8 @@
             this.panel1.Controls.Add(this.btPrimeiro);
             this.panel1.Location = new System.Drawing.Point(-1, 0);
             this.panel1.Name = "panel1";
-            this.panel1.Size = new System.Drawing.Size(692, 47);
+            this.panel1.Size = new System.Drawing.Size(814, 47);
             this.panel1.TabIndex = 35;
-            // 
-            // txtID
-            // 
-            this.txtID.Enabled = false;
-            this.txtID.Location = new System.Drawing.Point(12, 73);
-            this.txtID.Name = "txtID";
-            this.txtID.Size = new System.Drawing.Size(73, 20);
-            this.txtID.TabIndex = 41;
-            // 
-            // label14
-            // 
-            this.label14.AutoSize = true;
-            this.label14.Location = new System.Drawing.Point(12, 57);
-            this.label14.Name = "label14";
-            this.label14.Size = new System.Drawing.Size(40, 13);
-            this.label14.TabIndex = 42;
-            this.label14.Text = "Código";
-            // 
-            // errorProvider
-            // 
-            this.errorProvider.ContainerControl = this;
-            // 
-            // btLimpar
-            // 
-            this.btLimpar.FlatAppearance.BorderSize = 0;
-            this.btLimpar.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.btLimpar.Image = global::ControleEstoque.Properties.Resources.delete_sign;
-            this.btLimpar.Location = new System.Drawing.Point(52, 223);
-            this.btLimpar.Margin = new System.Windows.Forms.Padding(0);
-            this.btLimpar.Name = "btLimpar";
-            this.btLimpar.Size = new System.Drawing.Size(35, 31);
-            this.btLimpar.TabIndex = 37;
-            this.btLimpar.UseVisualStyleBackColor = true;
-            this.btLimpar.Click += new System.EventHandler(this.btLimpar_Click);
-            // 
-            // btSalvar
-            // 
-            this.btSalvar.FlatAppearance.BorderSize = 0;
-            this.btSalvar.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.btSalvar.Image = global::ControleEstoque.Properties.Resources.save;
-            this.btSalvar.Location = new System.Drawing.Point(11, 223);
-            this.btSalvar.Margin = new System.Windows.Forms.Padding(0);
-            this.btSalvar.Name = "btSalvar";
-            this.btSalvar.Size = new System.Drawing.Size(35, 31);
-            this.btSalvar.TabIndex = 36;
-            this.btSalvar.UseVisualStyleBackColor = true;
-            this.btSalvar.Click += new System.EventHandler(this.btSalvar_Click);
             // 
             // btAlterar
             // 
@@ -394,11 +350,87 @@
             this.btPrimeiro.UseVisualStyleBackColor = true;
             this.btPrimeiro.Click += new System.EventHandler(this.btPrimeiro_Click);
             // 
+            // txtID
+            // 
+            this.txtID.Enabled = false;
+            this.txtID.Location = new System.Drawing.Point(12, 73);
+            this.txtID.Name = "txtID";
+            this.txtID.Size = new System.Drawing.Size(73, 20);
+            this.txtID.TabIndex = 41;
+            // 
+            // label14
+            // 
+            this.label14.AutoSize = true;
+            this.label14.Location = new System.Drawing.Point(12, 57);
+            this.label14.Name = "label14";
+            this.label14.Size = new System.Drawing.Size(40, 13);
+            this.label14.TabIndex = 42;
+            this.label14.Text = "Código";
+            // 
+            // errorProvider
+            // 
+            this.errorProvider.ContainerControl = this;
+            // 
+            // btLimpar
+            // 
+            this.btLimpar.FlatAppearance.BorderSize = 0;
+            this.btLimpar.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.btLimpar.Image = global::ControleEstoque.Properties.Resources.delete_sign;
+            this.btLimpar.Location = new System.Drawing.Point(52, 183);
+            this.btLimpar.Margin = new System.Windows.Forms.Padding(0);
+            this.btLimpar.Name = "btLimpar";
+            this.btLimpar.Size = new System.Drawing.Size(35, 31);
+            this.btLimpar.TabIndex = 37;
+            this.btLimpar.UseVisualStyleBackColor = true;
+            this.btLimpar.Click += new System.EventHandler(this.btLimpar_Click);
+            // 
+            // btSalvar
+            // 
+            this.btSalvar.FlatAppearance.BorderSize = 0;
+            this.btSalvar.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.btSalvar.Image = global::ControleEstoque.Properties.Resources.save;
+            this.btSalvar.Location = new System.Drawing.Point(11, 183);
+            this.btSalvar.Margin = new System.Windows.Forms.Padding(0);
+            this.btSalvar.Name = "btSalvar";
+            this.btSalvar.Size = new System.Drawing.Size(35, 31);
+            this.btSalvar.TabIndex = 36;
+            this.btSalvar.UseVisualStyleBackColor = true;
+            this.btSalvar.Click += new System.EventHandler(this.btSalvar_Click);
+            // 
+            // txtEstado
+            // 
+            this.txtEstado.Location = new System.Drawing.Point(688, 151);
+            this.txtEstado.Name = "txtEstado";
+            this.txtEstado.Size = new System.Drawing.Size(100, 20);
+            this.txtEstado.TabIndex = 44;
+            // 
+            // label11
+            // 
+            this.label11.AutoSize = true;
+            this.label11.Location = new System.Drawing.Point(685, 135);
+            this.label11.Name = "label11";
+            this.label11.Size = new System.Drawing.Size(40, 13);
+            this.label11.TabIndex = 43;
+            this.label11.Text = "Estado";
+            // 
+            // cbAtivo
+            // 
+            this.cbAtivo.AutoSize = true;
+            this.cbAtivo.Location = new System.Drawing.Point(688, 75);
+            this.cbAtivo.Name = "cbAtivo";
+            this.cbAtivo.Size = new System.Drawing.Size(50, 17);
+            this.cbAtivo.TabIndex = 45;
+            this.cbAtivo.Text = "Ativo";
+            this.cbAtivo.UseVisualStyleBackColor = true;
+            // 
             // FrmPessoas
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(688, 266);
+            this.ClientSize = new System.Drawing.Size(810, 226);
+            this.Controls.Add(this.cbAtivo);
+            this.Controls.Add(this.txtEstado);
+            this.Controls.Add(this.label11);
             this.Controls.Add(this.label14);
             this.Controls.Add(this.txtID);
             this.Controls.Add(this.btLimpar);
@@ -413,7 +445,7 @@
             this.Controls.Add(this.label7);
             this.Controls.Add(this.txtEndereco);
             this.Controls.Add(this.label6);
-            this.Controls.Add(this.txtIndicacao);
+            this.Controls.Add(this.txtPontoReferencia);
             this.Controls.Add(this.label5);
             this.Controls.Add(this.txtTelefone);
             this.Controls.Add(this.label4);
@@ -447,7 +479,7 @@
         private System.Windows.Forms.Label label5;
         private System.Windows.Forms.TextBox txtTelefone;
         private System.Windows.Forms.Label label6;
-        private System.Windows.Forms.TextBox txtIndicacao;
+        private System.Windows.Forms.TextBox txtPontoReferencia;
         private System.Windows.Forms.Label label7;
         private System.Windows.Forms.TextBox txtEndereco;
         private System.Windows.Forms.Label label8;
@@ -470,5 +502,8 @@
         private System.Windows.Forms.Label label14;
         private System.Windows.Forms.Button btAlterar;
         private System.Windows.Forms.ErrorProvider errorProvider;
+        private System.Windows.Forms.TextBox txtEstado;
+        private System.Windows.Forms.Label label11;
+        private System.Windows.Forms.CheckBox cbAtivo;
     }
 }

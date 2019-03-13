@@ -292,6 +292,7 @@
             this.txtPreçoCusto.Name = "txtPreçoCusto";
             this.txtPreçoCusto.Size = new System.Drawing.Size(100, 20);
             this.txtPreçoCusto.TabIndex = 53;
+            this.txtPreçoCusto.Enter += new System.EventHandler(this.TxtPreçoCusto_Enter);
             this.txtPreçoCusto.Leave += new System.EventHandler(this.TxtPreçoCusto_Leave);
             // 
             // label5
@@ -309,6 +310,7 @@
             this.txtPreçoVenda.Name = "txtPreçoVenda";
             this.txtPreçoVenda.Size = new System.Drawing.Size(100, 20);
             this.txtPreçoVenda.TabIndex = 55;
+            this.txtPreçoVenda.Enter += new System.EventHandler(this.TxtPreçoVenda_Enter);
             this.txtPreçoVenda.Leave += new System.EventHandler(this.TxtPreçoVenda_Leave);
             // 
             // FrmProdutos
