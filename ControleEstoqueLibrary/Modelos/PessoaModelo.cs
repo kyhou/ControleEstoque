@@ -9,6 +9,7 @@ namespace ControleEstoqueLibrary
     public class PessoaModelo
     {
         public int Id { get; set; }
+        public int PraçaID { get; set; }
         public string Nome { get; set; }
         public DateTime Nascimento { get; set; }
         public string RG { get; set; }
@@ -20,6 +21,7 @@ namespace ControleEstoqueLibrary
         public string Bairro { get; set; }
         public string Cidade { get; set; }
         public string Estado { get; set; }
+        public bool Cliente { get; set; }
         public bool Ativo { get; set; }
     }
 }

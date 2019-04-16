@@ -29,7 +29,7 @@ namespace ControleEstoque
             }
         }
 
-        List<string> parameters = new List<string>
+        public static List<string> parameters = new List<string>
         {
             "Descrição", "Unidade", "Estoque", "PreçoCusto", "PreçoVenda"
         };
@@ -204,7 +204,7 @@ namespace ControleEstoque
 
         private void BtPesquisar_Click(object sender, EventArgs e)
         {
-            using (var form = new FrmProcura("Produto", parameters))
+            using (var form = new FrmProcura(this.Name, "Produto", parameters))
             {
                 var result = form.ShowDialog();
                 if (result == DialogResult.OK)

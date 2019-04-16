@@ -67,6 +67,8 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="FuncoesAuxiliares.cs" />
+    <Compile Include="Modelos\ProdutosCargaDevoluçãoModelo.cs" />
+    <Compile Include="Modelos\CargaDevoluçãoModelo.cs" />
     <Compile Include="Modelos\ItemModelo.cs" />
     <Compile Include="Modelos\PedidoModelo.cs" />
     <Compile Include="Modelos\PessoaModelo.cs" />
@@ -75,11 +77,11 @@
     </Compile>
     <Compile Include="Modelos\PraçaModelo.cs" />
     <Compile Include="Modelos\ProdutoModelo.cs" />
+    <Compile Include="Modelos\DepositoModelo.cs" />
     <Compile Include="Modelos\VendedorPraçaModelo.cs" />
     <Compile Include="Modelos\VendedorModelo.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="SqliteAcessoDados.cs" />
-    <Compile Include="Validators\PessoaValidator.cs" />
     <Service Include="{94E38DFF-614B-4cbd-B67C-F211BB35CE8B}" />
   </ItemGroup>
   <ItemGroup>

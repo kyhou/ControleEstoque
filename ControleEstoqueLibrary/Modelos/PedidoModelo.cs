@@ -17,5 +17,8 @@ namespace ControleEstoqueLibrary
         public int TotalItens { get; set; }
         public float Comissão { get; set; }
         public DateTime DataRetorno { get; set; }
+        public decimal ValorTotal { get; set; }
+        public decimal ValorPago { get; set; }
+        public bool Finalizado { get; set; }
     }
 }

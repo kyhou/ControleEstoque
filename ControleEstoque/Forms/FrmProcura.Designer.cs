@@ -53,18 +53,6 @@
             // cbbColunaPesquisa
             // 
             this.cbbColunaPesquisa.FormattingEnabled = true;
-            this.cbbColunaPesquisa.Items.AddRange(new object[] {
-            "ID",
-            "Nome",
-            "Nascimento ",
-            "RG",
-            "CPF",
-            "Telefone",
-            "PontoReferencia",
-            "Endereco",
-            "Numero",
-            "Bairro",
-            "Cidade"});
             this.cbbColunaPesquisa.Location = new System.Drawing.Point(12, 12);
             this.cbbColunaPesquisa.Name = "cbbColunaPesquisa";
             this.cbbColunaPesquisa.Size = new System.Drawing.Size(121, 21);

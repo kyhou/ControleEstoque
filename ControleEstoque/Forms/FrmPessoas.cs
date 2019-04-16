@@ -14,7 +14,7 @@ namespace ControleEstoque
     public partial class FrmPessoas : Form
     {
         public List<PessoaModelo> Pessoas { get; set; }
-        public PessoaModelo ResultadoPesquisa { get; set; }
+        //public PessoaModelo ResultadoPesquisa { get; set; }
 
         private bool isEditing = false;
         private int _atualID;
@@ -29,9 +29,9 @@ namespace ControleEstoque
             }
         }
 
-        List<string> parameters = new List<string>
+        static public List<string> parameters = new List<string>
         {
-            "Nome", "Nascimento", "RG", "CPF", "Telefone", "PontoReferencia", "Endereco", "Numero", "Bairro", "Cidade", "Estado", "Ativo"
+            "PraçaID", "Nome", "Nascimento", "RG", "CPF", "Telefone", "PontoReferencia", "Endereco", "Numero", "Bairro", "Cidade", "Estado", "Cliente", "Ativo"
         };
 
         public FrmPessoas()
@@ -56,6 +56,9 @@ namespace ControleEstoque
             txtBairro.Enabled = false;
             txtCidade.Enabled = false;
             txtEstado.Enabled = false;
+            txtIdPraça.Enabled = false;
+            txtNomePraça.Enabled = false;
+            btSearchPraça.Enabled = false;
             btPrimeiro.Enabled = false;
             btPesquisar.Enabled = false;
             btUltimo.Enabled = false;
@@ -67,6 +70,7 @@ namespace ControleEstoque
             btExcluir.Enabled = false;
             btAlterar.Enabled = false;
             cbAtivo.Enabled = false;
+            cbCliente.Enabled = false;
         }
 
         private void AtivarCampos()
@@ -82,6 +86,7 @@ namespace ControleEstoque
             txtBairro.Enabled = true;
             txtCidade.Enabled = true;
             txtEstado.Enabled = true;
+            btSearchPraça.Enabled = true;
             btPrimeiro.Enabled = true;
             btPesquisar.Enabled = true;
             btUltimo.Enabled = true;
@@ -93,12 +98,15 @@ namespace ControleEstoque
             btExcluir.Enabled = true;
             btAlterar.Enabled = true;
             cbAtivo.Enabled = true;
+            cbCliente.Enabled = true;
         }
 
         private void LimparCampos()
         {
             errorProvider.Clear();
             txtID.Text = "";
+            txtIdPraça.Text = "";
+            txtNomePraça.Text = "";
             txtName.Text = "";
             txtRG.Text = "";
             txtCPF.Text = "";
@@ -111,11 +119,14 @@ namespace ControleEstoque
             txtCidade.Text = "";
             txtEstado.Text = "";
             cbAtivo.Checked = false;
+            cbCliente.Checked = false;
         }
 
         private void ShowSelected(PessoaModelo modelo)
         {
             txtID.Text = modelo.Id.ToString();
+            txtIdPraça.Text = modelo.PraçaID.ToString();
+            txtNomePraça.Text = SqliteAcessoDados.LoadQuery<PraçaModelo>("select Nome from Praça where Praça.ID == " + modelo.PraçaID.ToString()).First().Nome;
             txtName.Text = modelo.Nome;
             txtRG.Text = modelo.RG;
             txtCPF.Text = modelo.CPF;
@@ -127,7 +138,8 @@ namespace ControleEstoque
             txtBairro.Text = modelo.Bairro;
             txtCidade.Text = modelo.Cidade;
             txtEstado.Text = modelo.Estado;
-            cbAtivo.Checked = modelo.Ativo ? true : false;
+            cbAtivo.Checked = modelo.Ativo; //? true : false;
+            cbCliente.Checked = modelo.Cliente;
         }
 
         private bool Validation()
@@ -157,7 +169,7 @@ namespace ControleEstoque
                 {
                     if (!isEditing)
                     {
-                        if (SqliteAcessoDados.RegistroExiste<PessoaModelo>("Pessoa", "CPF", txtCPF.Text))
+                        if (SqliteAcessoDados.RegistroExiste<PessoaModelo>("CPF", txtCPF.Text))
                         {
                             errorProvider.SetError(txtCPF, "CPF já cadastrado");
                             result = true;
@@ -191,6 +203,7 @@ namespace ControleEstoque
         {
             PessoaModelo modelo = new PessoaModelo
             {
+                PraçaID = int.Parse(txtIdPraça.Text),
                 Nome = txtName.Text,
                 Nascimento = DateTime.Parse(txtDataNascimento.Text),
                 RG = txtRG.Text,
@@ -202,7 +215,8 @@ namespace ControleEstoque
                 Bairro = txtBairro.Text,
                 Cidade = txtCidade.Text,
                 Estado = txtEstado.Text,
-                Ativo = cbAtivo.Checked ? true : false
+                Cliente = cbCliente.Checked,
+                Ativo = cbAtivo.Checked //? true : false
             };
 
             if (isEditing)
@@ -309,7 +323,7 @@ namespace ControleEstoque
 
         private void btPesquisa_Click(object sender, EventArgs e)
         {
-            using (var form = new FrmProcura("Pessoa", parameters))
+            using (var form = new FrmProcura(this.Name, "Pessoa", parameters))
             {
                 var result = form.ShowDialog();
                 if (result == DialogResult.OK)
@@ -388,6 +402,27 @@ namespace ControleEstoque
         private void btUltimo_Click(object sender, EventArgs e)
         {
             AtualID = Pessoas.Count - 1;
+        }
+
+        private void btSearchPraça_Click(object sender, EventArgs e)
+        {
+            List<string> parameters = new List<string>
+            {
+                "Nome"
+            };
+
+            using (var form = new FrmProcura(this.Name, "Praça", parameters))
+            {
+                var asd = this.Name;
+                var result = form.ShowDialog();
+                if (result == DialogResult.OK)
+                {
+                    PraçaModelo ResultadoPesquisaPraça = form.TableObjectPraça[form.ResultID];
+
+                    txtIdPraça.Text = ResultadoPesquisaPraça.Id.ToString();
+                    txtNomePraça.Text = ResultadoPesquisaPraça.Nome;
+                }
+            }
         }
     }
 }

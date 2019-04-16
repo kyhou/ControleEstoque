@@ -63,6 +63,16 @@ namespace ControleEstoque.Properties {
         /// <summary>
         ///   Looks up a localized resource of type System.Drawing.Bitmap.
         /// </summary>
+        internal static System.Drawing.Bitmap budget {
+            get {
+                object obj = ResourceManager.GetObject("budget", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
         internal static System.Drawing.Bitmap delete_sign {
             get {
                 object obj = ResourceManager.GetObject("delete-sign", resourceCulture);
@@ -93,6 +103,16 @@ namespace ControleEstoque.Properties {
         /// <summary>
         ///   Looks up a localized resource of type System.Drawing.Bitmap.
         /// </summary>
+        internal static System.Drawing.Bitmap icons8_broom_30 {
+            get {
+                object obj = ResourceManager.GetObject("icons8-broom-30", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
         internal static System.Drawing.Bitmap icons8_businessman_40 {
             get {
                 object obj = ResourceManager.GetObject("icons8-businessman-40", resourceCulture);
@@ -106,6 +126,16 @@ namespace ControleEstoque.Properties {
         internal static System.Drawing.Bitmap icons8_checkmark_30 {
             get {
                 object obj = ResourceManager.GetObject("icons8-checkmark-30", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap icons8_combo_chart_40 {
+            get {
+                object obj = ResourceManager.GetObject("icons8-combo-chart-40", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
             }
         }
@@ -193,9 +223,79 @@ namespace ControleEstoque.Properties {
         /// <summary>
         ///   Looks up a localized resource of type System.Drawing.Bitmap.
         /// </summary>
+        internal static System.Drawing.Bitmap icons8_print_40 {
+            get {
+                object obj = ResourceManager.GetObject("icons8-print-40", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
         internal static System.Drawing.Bitmap icons8_push_cart_40 {
             get {
                 object obj = ResourceManager.GetObject("icons8-push-cart-40", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap icons8_refund_40 {
+            get {
+                object obj = ResourceManager.GetObject("icons8-refund-40", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap icons8_sell_stock_40 {
+            get {
+                object obj = ResourceManager.GetObject("icons8-sell-stock-40", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap icons8_send_to_printer_30 {
+            get {
+                object obj = ResourceManager.GetObject("icons8-send-to-printer-30", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap icons8_transaction_30 {
+            get {
+                object obj = ResourceManager.GetObject("icons8-transaction-30", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap icons8_transaction_30_red {
+            get {
+                object obj = ResourceManager.GetObject("icons8-transaction-30_red", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap icons8_trolley_40 {
+            get {
+                object obj = ResourceManager.GetObject("icons8-trolley-40", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
             }
         }

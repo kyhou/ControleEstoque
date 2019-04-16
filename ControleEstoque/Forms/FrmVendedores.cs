@@ -33,7 +33,7 @@ namespace ControleEstoque
             }
         }
 
-        List<string> VendedorParameters = new List<string>
+        static public List<string> VendedorParameters = new List<string>
         {
             "PessoaID", "Placa", "CNH"
         };
@@ -168,7 +168,7 @@ namespace ControleEstoque
             {
                 PessoaId = int.Parse(txtIdPessoa.Text),
                 Placa = txtPlaca.Text,
-                CNH = int.Parse(txtCNH.Text)
+                CNH = txtCNH.Text
             };
 
             if (isEditing)
@@ -324,7 +324,7 @@ namespace ControleEstoque
 
         private void btPesquisar_Click(object sender, EventArgs e)
         {
-            using (var form = new FrmProcura("Vendedor", VendedorParameters))
+            using (var form = new FrmProcura(this.Name, "Vendedor", VendedorParameters))
             {
                 var result = form.ShowDialog();
                 if (result == DialogResult.OK)
@@ -408,10 +408,10 @@ namespace ControleEstoque
         {
             List<string> parameters = new List<string>
             {
-                "Nome", "Nascimento", "RG", "CPF", "Telefone", "PontoReferencia", "Endereco", "Numero", "Bairro", "Cidade", "Estado", "Ativo"
+                "PraçaID", "Nome", "Nascimento", "RG", "CPF", "Telefone", "PontoReferencia", "Endereco", "Numero", "Bairro", "Cidade", "Estado", "Cliente", "Ativo"
             };
 
-            using (var form = new FrmProcura("Pessoa", parameters))
+            using (var form = new FrmProcura(this.Name, "Pessoa", parameters))
             {
                 var result = form.ShowDialog();
                 if (result == DialogResult.OK)
@@ -431,7 +431,7 @@ namespace ControleEstoque
                 "Nome"
             };
 
-            using (var form = new FrmProcura("Praça", parameters))
+            using (var form = new FrmProcura(this.Name, "Praça", parameters))
             {
                 var result = form.ShowDialog();
                 if (result == DialogResult.OK)

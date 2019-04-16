@@ -28,12 +28,71 @@
         /// </summary>
         private void InitializeComponent()
         {
+            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(Main));
+            this.btFrmImpressão = new System.Windows.Forms.Button();
+            this.btFrmCargaDevolução = new System.Windows.Forms.Button();
+            this.btFrmDepositos = new System.Windows.Forms.Button();
             this.btFrmPedidos = new System.Windows.Forms.Button();
             this.btFrmProdutos = new System.Windows.Forms.Button();
             this.btFrmVendedores = new System.Windows.Forms.Button();
             this.btFrmPraças = new System.Windows.Forms.Button();
             this.btFrmPessoas = new System.Windows.Forms.Button();
+            this.btFrmRelatorios = new System.Windows.Forms.Button();
             this.SuspendLayout();
+            // 
+            // btFrmImpressão
+            // 
+            this.btFrmImpressão.BackColor = System.Drawing.Color.Transparent;
+            this.btFrmImpressão.FlatAppearance.BorderSize = 0;
+            this.btFrmImpressão.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.btFrmImpressão.Image = global::ControleEstoque.Properties.Resources.icons8_print_40;
+            this.btFrmImpressão.ImageAlign = System.Drawing.ContentAlignment.TopCenter;
+            this.btFrmImpressão.Location = new System.Drawing.Point(532, 9);
+            this.btFrmImpressão.Margin = new System.Windows.Forms.Padding(0);
+            this.btFrmImpressão.Name = "btFrmImpressão";
+            this.btFrmImpressão.Size = new System.Drawing.Size(65, 60);
+            this.btFrmImpressão.TabIndex = 7;
+            this.btFrmImpressão.Text = "Impressão";
+            this.btFrmImpressão.TextAlign = System.Drawing.ContentAlignment.BottomCenter;
+            this.btFrmImpressão.TextImageRelation = System.Windows.Forms.TextImageRelation.ImageAboveText;
+            this.btFrmImpressão.UseVisualStyleBackColor = false;
+            this.btFrmImpressão.Click += new System.EventHandler(this.btFrmImpressão_Click);
+            // 
+            // btFrmCargaDevolução
+            // 
+            this.btFrmCargaDevolução.BackColor = System.Drawing.Color.Transparent;
+            this.btFrmCargaDevolução.FlatAppearance.BorderSize = 0;
+            this.btFrmCargaDevolução.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.btFrmCargaDevolução.Image = global::ControleEstoque.Properties.Resources.icons8_trolley_40;
+            this.btFrmCargaDevolução.ImageAlign = System.Drawing.ContentAlignment.TopCenter;
+            this.btFrmCargaDevolução.Location = new System.Drawing.Point(431, 9);
+            this.btFrmCargaDevolução.Margin = new System.Windows.Forms.Padding(0);
+            this.btFrmCargaDevolução.Name = "btFrmCargaDevolução";
+            this.btFrmCargaDevolução.Size = new System.Drawing.Size(101, 60);
+            this.btFrmCargaDevolução.TabIndex = 6;
+            this.btFrmCargaDevolução.Text = "Carga/Devolução";
+            this.btFrmCargaDevolução.TextAlign = System.Drawing.ContentAlignment.BottomCenter;
+            this.btFrmCargaDevolução.TextImageRelation = System.Windows.Forms.TextImageRelation.ImageAboveText;
+            this.btFrmCargaDevolução.UseVisualStyleBackColor = false;
+            this.btFrmCargaDevolução.Click += new System.EventHandler(this.btFrmCargaDevolução_Click);
+            // 
+            // btFrmDepositos
+            // 
+            this.btFrmDepositos.BackColor = System.Drawing.Color.Transparent;
+            this.btFrmDepositos.FlatAppearance.BorderSize = 0;
+            this.btFrmDepositos.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.btFrmDepositos.Image = global::ControleEstoque.Properties.Resources.icons8_refund_40;
+            this.btFrmDepositos.ImageAlign = System.Drawing.ContentAlignment.TopCenter;
+            this.btFrmDepositos.Location = new System.Drawing.Point(369, 9);
+            this.btFrmDepositos.Margin = new System.Windows.Forms.Padding(0);
+            this.btFrmDepositos.Name = "btFrmDepositos";
+            this.btFrmDepositos.Size = new System.Drawing.Size(62, 60);
+            this.btFrmDepositos.TabIndex = 5;
+            this.btFrmDepositos.Text = "Depositos";
+            this.btFrmDepositos.TextAlign = System.Drawing.ContentAlignment.BottomCenter;
+            this.btFrmDepositos.TextImageRelation = System.Windows.Forms.TextImageRelation.ImageAboveText;
+            this.btFrmDepositos.UseVisualStyleBackColor = false;
+            this.btFrmDepositos.Click += new System.EventHandler(this.btFrmDepositos_Click);
             // 
             // btFrmPedidos
             // 
@@ -125,18 +184,41 @@
             this.btFrmPessoas.UseVisualStyleBackColor = false;
             this.btFrmPessoas.Click += new System.EventHandler(this.BtFrmPessoas_Click);
             // 
+            // btFrmRelatorios
+            // 
+            this.btFrmRelatorios.BackColor = System.Drawing.Color.Transparent;
+            this.btFrmRelatorios.FlatAppearance.BorderSize = 0;
+            this.btFrmRelatorios.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.btFrmRelatorios.Image = global::ControleEstoque.Properties.Resources.icons8_combo_chart_40;
+            this.btFrmRelatorios.ImageAlign = System.Drawing.ContentAlignment.TopCenter;
+            this.btFrmRelatorios.Location = new System.Drawing.Point(597, 9);
+            this.btFrmRelatorios.Margin = new System.Windows.Forms.Padding(0);
+            this.btFrmRelatorios.Name = "btFrmRelatorios";
+            this.btFrmRelatorios.Size = new System.Drawing.Size(63, 60);
+            this.btFrmRelatorios.TabIndex = 8;
+            this.btFrmRelatorios.Text = "Relatorios";
+            this.btFrmRelatorios.TextAlign = System.Drawing.ContentAlignment.BottomCenter;
+            this.btFrmRelatorios.TextImageRelation = System.Windows.Forms.TextImageRelation.ImageAboveText;
+            this.btFrmRelatorios.UseVisualStyleBackColor = false;
+            this.btFrmRelatorios.Click += new System.EventHandler(this.btFrmRelatorios_Click);
+            // 
             // Main
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(800, 450);
+            this.ClientSize = new System.Drawing.Size(674, 89);
+            this.Controls.Add(this.btFrmRelatorios);
+            this.Controls.Add(this.btFrmImpressão);
+            this.Controls.Add(this.btFrmCargaDevolução);
+            this.Controls.Add(this.btFrmDepositos);
             this.Controls.Add(this.btFrmPedidos);
             this.Controls.Add(this.btFrmProdutos);
             this.Controls.Add(this.btFrmVendedores);
             this.Controls.Add(this.btFrmPraças);
             this.Controls.Add(this.btFrmPessoas);
+            this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.Name = "Main";
-            this.Text = "Form1";
+            this.Text = "Controle de Estoque";
             this.ResumeLayout(false);
 
         }
@@ -148,6 +230,10 @@
         private System.Windows.Forms.Button btFrmVendedores;
         private System.Windows.Forms.Button btFrmProdutos;
         private System.Windows.Forms.Button btFrmPedidos;
+        private System.Windows.Forms.Button btFrmDepositos;
+        private System.Windows.Forms.Button btFrmCargaDevolução;
+        private System.Windows.Forms.Button btFrmImpressão;
+        private System.Windows.Forms.Button btFrmRelatorios;
     }
 }
 

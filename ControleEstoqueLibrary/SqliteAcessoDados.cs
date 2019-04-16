@@ -82,7 +82,109 @@ namespace ControleEstoqueLibrary
             using (IDbConnection cnn = new SQLiteConnection(LoadConnectionString()))
             {
                 string sql = "select * from " + tabela + " " + sqlQuery;
-                var output = cnn.Query<T>(sql , new DynamicParameters());
+                var output = cnn.Query<T>(sql, new DynamicParameters());
+                return output.ToList();
+            }
+        }
+
+        public static List<T> GetPesquisarTodos<T>(string sqlQuery)
+        {
+            string tabela = "";
+
+            if (typeof(T) == typeof(PessoaModelo))
+            {
+                tabela = "Pessoa";
+            }
+
+            if (typeof(T) == typeof(DepositoModelo))
+            {
+                tabela = "Deposito";
+            }
+
+            if (typeof(T) == typeof(ItemModelo))
+            {
+                tabela = "Item";
+            }
+
+            if (typeof(T) == typeof(PedidoModelo))
+            {
+                tabela = "Pedido";
+            }
+
+            if (typeof(T) == typeof(PraçaModelo))
+            {
+                tabela = "Praça";
+            }
+
+            if (typeof(T) == typeof(ProdutoModelo))
+            {
+                tabela = "Produto";
+            }
+
+            if (typeof(T) == typeof(VendedorModelo))
+            {
+                tabela = "Vendedor";
+            }
+
+            if (typeof(T) == typeof(VendedorPraçaModelo))
+            {
+                tabela = "VendedorPraça";
+            }
+            using (IDbConnection cnn = new SQLiteConnection(LoadConnectionString()))
+            {
+                string sql = "select * from " + tabela + " " + sqlQuery;
+                var output = cnn.Query<T>(sql, new DynamicParameters());
+                return output.ToList();
+            }
+        }
+
+        public static List<T> GetPesquisarTodos<T>()
+        {
+            string tabela = "";
+
+            if (typeof(T) == typeof(PessoaModelo))
+            {
+                tabela = "Pessoa";
+            }
+
+            if (typeof(T) == typeof(DepositoModelo))
+            {
+                tabela = "Deposito";
+            }
+
+            if (typeof(T) == typeof(ItemModelo))
+            {
+                tabela = "Item";
+            }
+
+            if (typeof(T) == typeof(PedidoModelo))
+            {
+                tabela = "Pedido";
+            }
+
+            if (typeof(T) == typeof(PraçaModelo))
+            {
+                tabela = "Praça";
+            }
+
+            if (typeof(T) == typeof(ProdutoModelo))
+            {
+                tabela = "Produto";
+            }
+
+            if (typeof(T) == typeof(VendedorModelo))
+            {
+                tabela = "Vendedor";
+            }
+
+            if (typeof(T) == typeof(VendedorPraçaModelo))
+            {
+                tabela = "VendedorPraça";
+            }
+            using (IDbConnection cnn = new SQLiteConnection(LoadConnectionString()))
+            {
+                string sql = "select * from " + tabela;
+                var output = cnn.Query<T>(sql, new DynamicParameters());
                 return output.ToList();
             }
         }
@@ -103,8 +205,50 @@ namespace ControleEstoqueLibrary
             }
         }
 
-        public static bool RegistroExiste<T>(string tableName, string columnName, string value)
+        public static bool RegistroExiste<T>(string columnName, string value)
         {
+            string tableName = "";
+
+            if (typeof(T) == typeof(PessoaModelo))
+            {
+                tableName = "Pessoa";
+            }
+
+            if (typeof(T) == typeof(DepositoModelo))
+            {
+                tableName = "Deposito";
+            }
+
+            if (typeof(T) == typeof(ItemModelo))
+            {
+                tableName = "Item";
+            }
+
+            if (typeof(T) == typeof(PedidoModelo))
+            {
+                tableName = "Pedido";
+            }
+
+            if (typeof(T) == typeof(PraçaModelo))
+            {
+                tableName = "Praça";
+            }
+
+            if (typeof(T) == typeof(ProdutoModelo))
+            {
+                tableName = "Produto";
+            }
+
+            if (typeof(T) == typeof(VendedorModelo))
+            {
+                tableName = "Vendedor";
+            }
+
+            if (typeof(T) == typeof(VendedorPraçaModelo))
+            {
+                tableName = "VendedorPraça";
+            }
+
             using (IDbConnection cnn = new SQLiteConnection(LoadConnectionString()))
             {
                 bool result = false;

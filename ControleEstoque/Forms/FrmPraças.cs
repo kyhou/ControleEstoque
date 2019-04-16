@@ -181,7 +181,7 @@ namespace ControleEstoque
 
         private void btPesquisar_Click(object sender, EventArgs e)
         {
-            using (var form = new FrmProcura("Praça", parameters))
+            using (var form = new FrmProcura(this.Name, "Praça", parameters))
             {
                 var result = form.ShowDialog();
                 if (result == DialogResult.OK)

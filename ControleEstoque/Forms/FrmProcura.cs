@@ -19,12 +19,19 @@ namespace ControleEstoque
         public List<ProdutoModelo> TableObjectProduto { get; set; }
         public List<PedidoModelo> TableObjectPedido { get; set; }
         public List<ItemModelo> TableObjectItem { get; set; }
+        public List<DepositoModelo> TableObjectDeposito { get; set; }
+        public List<CargaDevoluçãoModelo> TableObjectCargaDevolução { get; set; }
 
         public int ResultID { get; set; }
         
         private string tableName;
+        private string formName;
 
-        public FrmProcura(string table, List<string> parameters)
+        private List<VendedorModelo> Vendedores { get; set; }
+        private List<PessoaModelo> Pessoas { get; set; }
+        private List<PraçaModelo> Praças { get; set; }
+
+        public FrmProcura(string form, string table, List<string> parameters)
         {
             InitializeComponent();
 
@@ -34,12 +41,41 @@ namespace ControleEstoque
             cbbColunaPesquisa.Items.Add("ID");
             for (int i = 0; i < parameters.Count; i++)
             {
+                if (table == "Deposito")
+                {
+                    if(parameters[i] == "VendedorId")
+                    {
+                        cbbColunaPesquisa.Items.Add("Nome");
+                    }
+                }
+
+                if (table == "CargaDevolução")
+                {
+                    if (parameters[i] == "VendedorID")
+                    {
+                        cbbColunaPesquisa.Items.Add("Nome");
+                    }
+                    else
+                    {
+                        if (parameters[i] == "PraçaID")
+                        {
+                            cbbColunaPesquisa.Items.Add("Praça");
+                        }
+                    }
+                }
                 cbbColunaPesquisa.Items.Add(parameters[i]);
-            }            
+            }
+
             cbbColunaPesquisa.SelectedIndex = 1;
+            if(table == "Pessoa")
+            {
+                cbbColunaPesquisa.SelectedIndex = 2;
+            }
+
             cbbQuery.SelectedItem = "Começa com";
 
             tableName = table;
+            formName = form;
         }
 
         private string ReturnQuery()
@@ -68,12 +104,69 @@ namespace ControleEstoque
             return result;
         }
 
+        private string ReturnQuery(string parameter)
+        {
+            string result = "";
+
+            switch (cbbQuery.SelectedItem)
+            {
+                case "Igual a":
+                    result = "where " + parameter + " = '" + txtQuery.Text + "'";
+                    break;
+                case "Começa com":
+                    result = "where " + parameter + " like '" + txtQuery.Text + "%'";
+                    break;
+                case "Termina com":
+                    result = "where " + parameter + " like '%" + txtQuery.Text + "'";
+                    break;
+                case "Contém":
+                    result = "where " + parameter + " like '%" + txtQuery.Text + "%'";
+                    break;
+                default:
+                    result = "";
+                    break;
+            }
+
+            return result;
+        }
+
+        private string ReturnQuery(string parameter, string query)
+        {
+            string result = "";
+
+            switch (cbbQuery.SelectedItem)
+            {
+                case "Igual a":
+                    result = "where " + parameter + " = '" + query + "'";
+                    break;
+                case "Começa com":
+                    result = "where " + parameter + " like '" + query + "%'";
+                    break;
+                case "Termina com":
+                    result = "where " + parameter + " like '%" + query + "'";
+                    break;
+                case "Contém":
+                    result = "where " + parameter + " like '%" + query + "%'";
+                    break;
+                default:
+                    result = "";
+                    break;
+            }
+
+            return result;
+        }
+
         private void btPesquisar_Click(object sender, EventArgs e)
         {
             switch (tableName)
             {
                 case "Pessoa":
-                    TableObjectPessoa = SqliteAcessoDados.GetPesquisarTodos<PessoaModelo>(ReturnQuery(), tableName);
+                    string query = ReturnQuery();
+                    if (formName == "FrmPedidos")
+                    {
+                        query += " and Ativo == 1 and Cliente == 1";
+                    }
+                    TableObjectPessoa = SqliteAcessoDados.GetPesquisarTodos<PessoaModelo>(query, tableName);
                     dgvResultados.DataSource = TableObjectPessoa;
                     break;
                 case "Praça":
@@ -102,6 +195,175 @@ namespace ControleEstoque
                 case "Item":
                     TableObjectItem = SqliteAcessoDados.GetPesquisarTodos<ItemModelo>(ReturnQuery(), tableName);
                     dgvResultados.DataSource = TableObjectItem;
+                    break;
+                case "Deposito":
+                    dgvResultados.Columns.Clear();
+
+                    TableObjectDeposito = new List<DepositoModelo>();
+                    Pessoas = new List<PessoaModelo>();
+                    Vendedores = new List<VendedorModelo>();
+
+                    dgvResultados.Columns.Add("Nome", "Nome");
+
+                    if (cbbColunaPesquisa.SelectedItem.ToString() == "Nome")
+                    {
+
+                        Pessoas = SqliteAcessoDados.GetPesquisarTodos<PessoaModelo>(ReturnQuery(), "Pessoa");
+
+                        foreach (PessoaModelo pessoa in Pessoas)
+                        {
+                            if (SqliteAcessoDados.RegistroExiste<VendedorModelo>("PessoaID", pessoa.Id.ToString()))
+                            {
+                                Vendedores.Add(SqliteAcessoDados.LoadQuery<VendedorModelo>("select * from Vendedor where Vendedor.PessoaID == " + pessoa.Id).First());
+                            }
+                        }
+
+                        List<DepositoModelo> depositos = new List<DepositoModelo>();
+
+                        foreach (VendedorModelo vendedor in Vendedores)
+                        {
+                            depositos = SqliteAcessoDados.LoadQuery<DepositoModelo>("select * from Deposito where Deposito.VendedorID == " + vendedor.Id);
+
+                            foreach (DepositoModelo deposito in depositos)
+                            {
+                                TableObjectDeposito.Add(deposito);
+                            }
+                        }
+                    }
+                    else
+                    {
+                        TableObjectDeposito = SqliteAcessoDados.GetPesquisarTodos<DepositoModelo>(ReturnQuery(), tableName);
+                    }
+
+                    dgvResultados.DataSource = TableObjectDeposito;
+
+                    for (int i = 0; i < TableObjectDeposito.Count; i++)
+                    {
+                        foreach (VendedorModelo vendedor in Vendedores)
+                        {
+                            if (dgvResultados.Rows[i].Cells["VendedorId"].Value.ToString() == vendedor.Id.ToString())
+                            {
+                                foreach (PessoaModelo pessoa in Pessoas)
+                                {
+                                    if (pessoa.Id == vendedor.PessoaId)
+                                    {
+                                        dgvResultados.Rows[i].Cells["Nome"].Value = pessoa.Nome;
+                                        break;
+                                    }
+                                }
+                                break;
+                            }
+                        }
+                    }
+
+                    break;
+                case "CargaDevolução":
+                    dgvResultados.Columns.Clear();
+
+                    TableObjectCargaDevolução = new List<CargaDevoluçãoModelo>();
+                    Pessoas = new List<PessoaModelo>();
+                    Vendedores = new List<VendedorModelo>();
+                    Praças = new List<PraçaModelo>();
+
+                    dgvResultados.Columns.Add("Nome", "Nome");
+                    dgvResultados.Columns.Add("Praça", "Praça");
+
+                    if (cbbColunaPesquisa.SelectedItem.ToString() == "Nome")
+                    {
+                        Pessoas = SqliteAcessoDados.GetPesquisarTodos<PessoaModelo>(ReturnQuery(), "Pessoa");
+
+                        foreach (PessoaModelo pessoa in Pessoas)
+                        {
+                            if (SqliteAcessoDados.RegistroExiste<VendedorModelo>("PessoaID", pessoa.Id.ToString()))
+                            {
+                                Vendedores.Add(SqliteAcessoDados.LoadQuery<VendedorModelo>("select * from Vendedor where Vendedor.PessoaID == " + pessoa.Id).First());
+                            }
+                        }
+
+                        List<CargaDevoluçãoModelo> cargaDevoluçãoList = new List<CargaDevoluçãoModelo>();
+
+                        foreach (VendedorModelo vendedor in Vendedores)
+                        {
+                            cargaDevoluçãoList = SqliteAcessoDados.LoadQuery<CargaDevoluçãoModelo>("select * from CargaDevolução where CargaDevolução.VendedorID == " + vendedor.Id);
+
+                            foreach (CargaDevoluçãoModelo cargaDevolução in cargaDevoluçãoList)
+                            {
+                                TableObjectCargaDevolução.Add(cargaDevolução);
+                            }
+                        }
+
+                        Praças = SqliteAcessoDados.GetPesquisarTodos<PraçaModelo>(ReturnQuery("ID", ""));
+                    }
+                    else
+                    {
+                        if (cbbColunaPesquisa.SelectedItem.ToString() == "Praça")
+                        {
+
+                            Praças = SqliteAcessoDados.GetPesquisarTodos<PraçaModelo>(ReturnQuery("Nome"), "Praça");
+
+                            List<VendedorPraçaModelo> vendedorPraçaList = new List<VendedorPraçaModelo>();
+
+                            foreach (PraçaModelo praça in Praças)
+                            {
+                                vendedorPraçaList = SqliteAcessoDados.LoadQuery<VendedorPraçaModelo>("select * from VendedorPraça where VendedorPraça.PraçaID == " + praça.Id);
+
+                                foreach (VendedorPraçaModelo vendedorPraça in vendedorPraçaList)
+                                {
+                                    if (Vendedores.Find(r => r.Id == vendedorPraça.VendedorId) == null) {
+                                        Vendedores.Add(SqliteAcessoDados.LoadQuery<VendedorModelo>("select * from Vendedor where Vendedor.ID == " + vendedorPraça.VendedorId).First());
+                                    }
+                                }
+                            }
+
+                            List<CargaDevoluçãoModelo> cargaDevoluçãoList = new List<CargaDevoluçãoModelo>();
+
+                            foreach (PraçaModelo praça in Praças)
+                            {
+                                cargaDevoluçãoList = SqliteAcessoDados.LoadQuery<CargaDevoluçãoModelo>("select * from CargaDevolução where CargaDevolução.PraçaID == " + praça.Id);
+
+                                foreach (CargaDevoluçãoModelo cargaDevolução in cargaDevoluçãoList)
+                                {
+                                    TableObjectCargaDevolução.Add(cargaDevolução);
+                                }
+                            }
+
+                            Pessoas = SqliteAcessoDados.GetPesquisarTodos<PessoaModelo>(ReturnQuery("ID", ""));
+                        }
+                        else
+                        {
+                            TableObjectCargaDevolução = SqliteAcessoDados.GetPesquisarTodos<CargaDevoluçãoModelo>(ReturnQuery(), tableName);
+                        }
+                    }
+
+                    dgvResultados.DataSource = TableObjectCargaDevolução;
+
+                    for (int i = 0; i < TableObjectCargaDevolução.Count; i++)
+                    {
+                        foreach (VendedorModelo vendedor in Vendedores)
+                        {
+                            if (dgvResultados.Rows[i].Cells["VendedorId"].Value.ToString() == vendedor.Id.ToString())
+                            {
+                                foreach (PessoaModelo pessoa in Pessoas)
+                                {
+                                    if (pessoa.Id == vendedor.PessoaId)
+                                    {
+                                        dgvResultados.Rows[i].Cells["Nome"].Value = pessoa.Nome;
+                                        break;
+                                    }
+                                }
+                                break;
+                            }
+                        }
+
+                        foreach (PraçaModelo praça in Praças)
+                        {
+                            if(dgvResultados.Rows[i].Cells["PraçaID"].Value.ToString() == praça.Id.ToString())
+                            {
+                                dgvResultados.Rows[i].Cells["Praça"].Value = praça.Nome;
+                            }
+                        }
+                    }
+
                     break;
                 default:
                     break;

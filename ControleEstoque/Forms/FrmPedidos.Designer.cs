@@ -29,10 +29,10 @@
         private void InitializeComponent()
         {
             this.components = new System.ComponentModel.Container();
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle1 = new System.Windows.Forms.DataGridViewCellStyle();
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle2 = new System.Windows.Forms.DataGridViewCellStyle();
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle3 = new System.Windows.Forms.DataGridViewCellStyle();
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle4 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle5 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle6 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle7 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle8 = new System.Windows.Forms.DataGridViewCellStyle();
             this.txtNomePessoa = new System.Windows.Forms.TextBox();
             this.label2 = new System.Windows.Forms.Label();
             this.txtRG = new System.Windows.Forms.TextBox();
@@ -53,6 +53,7 @@
             this.txtCidade = new System.Windows.Forms.TextBox();
             this.label10 = new System.Windows.Forms.Label();
             this.panel1 = new System.Windows.Forms.Panel();
+            this.btEstornar = new System.Windows.Forms.Button();
             this.btConfirmarVenda = new System.Windows.Forms.Button();
             this.btAlterar = new System.Windows.Forms.Button();
             this.btExcluir = new System.Windows.Forms.Button();
@@ -69,10 +70,6 @@
             this.label11 = new System.Windows.Forms.Label();
             this.txtIdVendedor = new System.Windows.Forms.TextBox();
             this.label12 = new System.Windows.Forms.Label();
-            this.btSearchVendedor = new System.Windows.Forms.Button();
-            this.btSearchPessoa = new System.Windows.Forms.Button();
-            this.btLimpar = new System.Windows.Forms.Button();
-            this.btSalvar = new System.Windows.Forms.Button();
             this.txtNomeVendedor = new System.Windows.Forms.TextBox();
             this.label1 = new System.Windows.Forms.Label();
             this.label13 = new System.Windows.Forms.Label();
@@ -104,10 +101,13 @@
             this.txtEstado = new System.Windows.Forms.TextBox();
             this.label22 = new System.Windows.Forms.Label();
             this.cbAtivo = new System.Windows.Forms.CheckBox();
-            this.cbPraça = new System.Windows.Forms.ComboBox();
-            this.button1 = new System.Windows.Forms.Button();
+            this.cbbPraça = new System.Windows.Forms.ComboBox();
             this.txtValorPago = new System.Windows.Forms.TextBox();
             this.label23 = new System.Windows.Forms.Label();
+            this.btSearchVendedor = new System.Windows.Forms.Button();
+            this.btSearchPessoa = new System.Windows.Forms.Button();
+            this.btLimpar = new System.Windows.Forms.Button();
+            this.btSalvar = new System.Windows.Forms.Button();
             this.panel1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.errorProvider)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.dgvItens)).BeginInit();
@@ -267,7 +267,7 @@
             // panel1
             // 
             this.panel1.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-            this.panel1.Controls.Add(this.button1);
+            this.panel1.Controls.Add(this.btEstornar);
             this.panel1.Controls.Add(this.btConfirmarVenda);
             this.panel1.Controls.Add(this.btAlterar);
             this.panel1.Controls.Add(this.btExcluir);
@@ -281,6 +281,19 @@
             this.panel1.Name = "panel1";
             this.panel1.Size = new System.Drawing.Size(1072, 47);
             this.panel1.TabIndex = 35;
+            // 
+            // btEstornar
+            // 
+            this.btEstornar.FlatAppearance.BorderSize = 0;
+            this.btEstornar.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.btEstornar.Image = global::ControleEstoque.Properties.Resources.icons8_transaction_30_red;
+            this.btEstornar.Location = new System.Drawing.Point(518, 7);
+            this.btEstornar.Margin = new System.Windows.Forms.Padding(0);
+            this.btEstornar.Name = "btEstornar";
+            this.btEstornar.Size = new System.Drawing.Size(35, 31);
+            this.btEstornar.TabIndex = 10;
+            this.btEstornar.UseVisualStyleBackColor = true;
+            this.btEstornar.Click += new System.EventHandler(this.btEstornar_Click);
             // 
             // btConfirmarVenda
             // 
@@ -454,56 +467,6 @@
             this.label12.TabIndex = 63;
             this.label12.Text = "Código Vendedor";
             // 
-            // btSearchVendedor
-            // 
-            this.btSearchVendedor.FlatAppearance.BorderSize = 0;
-            this.btSearchVendedor.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.btSearchVendedor.Image = global::ControleEstoque.Properties.Resources.search_16;
-            this.btSearchVendedor.Location = new System.Drawing.Point(91, 191);
-            this.btSearchVendedor.Name = "btSearchVendedor";
-            this.btSearchVendedor.Size = new System.Drawing.Size(21, 21);
-            this.btSearchVendedor.TabIndex = 62;
-            this.btSearchVendedor.UseVisualStyleBackColor = true;
-            this.btSearchVendedor.Click += new System.EventHandler(this.btSearchVendedor_Click);
-            // 
-            // btSearchPessoa
-            // 
-            this.btSearchPessoa.FlatAppearance.BorderSize = 0;
-            this.btSearchPessoa.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.btSearchPessoa.Image = global::ControleEstoque.Properties.Resources.search_16;
-            this.btSearchPessoa.Location = new System.Drawing.Point(281, 72);
-            this.btSearchPessoa.Name = "btSearchPessoa";
-            this.btSearchPessoa.Size = new System.Drawing.Size(21, 21);
-            this.btSearchPessoa.TabIndex = 59;
-            this.btSearchPessoa.UseVisualStyleBackColor = true;
-            this.btSearchPessoa.Click += new System.EventHandler(this.btSearchPessoa_Click);
-            // 
-            // btLimpar
-            // 
-            this.btLimpar.FlatAppearance.BorderSize = 0;
-            this.btLimpar.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.btLimpar.Image = global::ControleEstoque.Properties.Resources.delete_sign;
-            this.btLimpar.Location = new System.Drawing.Point(51, 471);
-            this.btLimpar.Margin = new System.Windows.Forms.Padding(0);
-            this.btLimpar.Name = "btLimpar";
-            this.btLimpar.Size = new System.Drawing.Size(35, 31);
-            this.btLimpar.TabIndex = 37;
-            this.btLimpar.UseVisualStyleBackColor = true;
-            this.btLimpar.Click += new System.EventHandler(this.btLimpar_Click);
-            // 
-            // btSalvar
-            // 
-            this.btSalvar.FlatAppearance.BorderSize = 0;
-            this.btSalvar.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.btSalvar.Image = global::ControleEstoque.Properties.Resources.save;
-            this.btSalvar.Location = new System.Drawing.Point(10, 471);
-            this.btSalvar.Margin = new System.Windows.Forms.Padding(0);
-            this.btSalvar.Name = "btSalvar";
-            this.btSalvar.Size = new System.Drawing.Size(35, 31);
-            this.btSalvar.TabIndex = 36;
-            this.btSalvar.UseVisualStyleBackColor = true;
-            this.btSalvar.Click += new System.EventHandler(this.btSalvar_Click);
-            // 
             // txtNomeVendedor
             // 
             this.txtNomeVendedor.Enabled = false;
@@ -566,9 +529,9 @@
             // 
             // btSearchProduto
             // 
-            dataGridViewCellStyle1.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleRight;
-            dataGridViewCellStyle1.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.btSearchProduto.DefaultCellStyle = dataGridViewCellStyle1;
+            dataGridViewCellStyle5.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleRight;
+            dataGridViewCellStyle5.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.btSearchProduto.DefaultCellStyle = dataGridViewCellStyle5;
             this.btSearchProduto.HeaderText = "";
             this.btSearchProduto.Name = "btSearchProduto";
             this.btSearchProduto.Resizable = System.Windows.Forms.DataGridViewTriState.False;
@@ -578,8 +541,8 @@
             // 
             // txtIdProduto
             // 
-            dataGridViewCellStyle2.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleRight;
-            this.txtIdProduto.DefaultCellStyle = dataGridViewCellStyle2;
+            dataGridViewCellStyle6.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleRight;
+            this.txtIdProduto.DefaultCellStyle = dataGridViewCellStyle6;
             this.txtIdProduto.HeaderText = "Código";
             this.txtIdProduto.Name = "txtIdProduto";
             this.txtIdProduto.Width = 80;
@@ -614,19 +577,19 @@
             // 
             // txtPreçoVenda
             // 
-            dataGridViewCellStyle3.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleRight;
-            dataGridViewCellStyle3.Format = "C2";
-            dataGridViewCellStyle3.NullValue = null;
-            this.txtPreçoVenda.DefaultCellStyle = dataGridViewCellStyle3;
+            dataGridViewCellStyle7.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleRight;
+            dataGridViewCellStyle7.Format = "C2";
+            dataGridViewCellStyle7.NullValue = null;
+            this.txtPreçoVenda.DefaultCellStyle = dataGridViewCellStyle7;
             this.txtPreçoVenda.HeaderText = "Preço Venda";
             this.txtPreçoVenda.Name = "txtPreçoVenda";
             // 
             // txtPreçoTotalItem
             // 
-            dataGridViewCellStyle4.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleRight;
-            dataGridViewCellStyle4.Format = "C2";
-            dataGridViewCellStyle4.NullValue = null;
-            this.txtPreçoTotalItem.DefaultCellStyle = dataGridViewCellStyle4;
+            dataGridViewCellStyle8.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleRight;
+            dataGridViewCellStyle8.Format = "C2";
+            dataGridViewCellStyle8.NullValue = null;
+            this.txtPreçoTotalItem.DefaultCellStyle = dataGridViewCellStyle8;
             this.txtPreçoTotalItem.HeaderText = "Preço Total";
             this.txtPreçoTotalItem.Name = "txtPreçoTotalItem";
             this.txtPreçoTotalItem.ReadOnly = true;
@@ -773,25 +736,13 @@
             this.cbAtivo.Text = "Ativo";
             this.cbAtivo.UseVisualStyleBackColor = true;
             // 
-            // cbPraça
+            // cbbPraça
             // 
-            this.cbPraça.FormattingEnabled = true;
-            this.cbPraça.Location = new System.Drawing.Point(570, 192);
-            this.cbPraça.Name = "cbPraça";
-            this.cbPraça.Size = new System.Drawing.Size(121, 21);
-            this.cbPraça.TabIndex = 89;
-            // 
-            // button1
-            // 
-            this.button1.FlatAppearance.BorderSize = 0;
-            this.button1.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.button1.Image = global::ControleEstoque.Properties.Resources.icons8_checkmark_30;
-            this.button1.Location = new System.Drawing.Point(518, 7);
-            this.button1.Margin = new System.Windows.Forms.Padding(0);
-            this.button1.Name = "button1";
-            this.button1.Size = new System.Drawing.Size(35, 31);
-            this.button1.TabIndex = 10;
-            this.button1.UseVisualStyleBackColor = true;
+            this.cbbPraça.FormattingEnabled = true;
+            this.cbbPraça.Location = new System.Drawing.Point(570, 192);
+            this.cbbPraça.Name = "cbbPraça";
+            this.cbbPraça.Size = new System.Drawing.Size(121, 21);
+            this.cbbPraça.TabIndex = 89;
             // 
             // txtValorPago
             // 
@@ -799,6 +750,8 @@
             this.txtValorPago.Name = "txtValorPago";
             this.txtValorPago.Size = new System.Drawing.Size(100, 20);
             this.txtValorPago.TabIndex = 90;
+            this.txtValorPago.Enter += new System.EventHandler(this.txtValorPago_Enter);
+            this.txtValorPago.Leave += new System.EventHandler(this.txtValorPago_Leave);
             // 
             // label23
             // 
@@ -809,6 +762,56 @@
             this.label23.TabIndex = 91;
             this.label23.Text = "Valor Pago";
             // 
+            // btSearchVendedor
+            // 
+            this.btSearchVendedor.FlatAppearance.BorderSize = 0;
+            this.btSearchVendedor.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.btSearchVendedor.Image = global::ControleEstoque.Properties.Resources.search_16;
+            this.btSearchVendedor.Location = new System.Drawing.Point(91, 191);
+            this.btSearchVendedor.Name = "btSearchVendedor";
+            this.btSearchVendedor.Size = new System.Drawing.Size(21, 21);
+            this.btSearchVendedor.TabIndex = 62;
+            this.btSearchVendedor.UseVisualStyleBackColor = true;
+            this.btSearchVendedor.Click += new System.EventHandler(this.btSearchVendedor_Click);
+            // 
+            // btSearchPessoa
+            // 
+            this.btSearchPessoa.FlatAppearance.BorderSize = 0;
+            this.btSearchPessoa.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.btSearchPessoa.Image = global::ControleEstoque.Properties.Resources.search_16;
+            this.btSearchPessoa.Location = new System.Drawing.Point(281, 72);
+            this.btSearchPessoa.Name = "btSearchPessoa";
+            this.btSearchPessoa.Size = new System.Drawing.Size(21, 21);
+            this.btSearchPessoa.TabIndex = 59;
+            this.btSearchPessoa.UseVisualStyleBackColor = true;
+            this.btSearchPessoa.Click += new System.EventHandler(this.btSearchPessoa_Click);
+            // 
+            // btLimpar
+            // 
+            this.btLimpar.FlatAppearance.BorderSize = 0;
+            this.btLimpar.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.btLimpar.Image = global::ControleEstoque.Properties.Resources.delete_sign;
+            this.btLimpar.Location = new System.Drawing.Point(51, 471);
+            this.btLimpar.Margin = new System.Windows.Forms.Padding(0);
+            this.btLimpar.Name = "btLimpar";
+            this.btLimpar.Size = new System.Drawing.Size(35, 31);
+            this.btLimpar.TabIndex = 37;
+            this.btLimpar.UseVisualStyleBackColor = true;
+            this.btLimpar.Click += new System.EventHandler(this.btLimpar_Click);
+            // 
+            // btSalvar
+            // 
+            this.btSalvar.FlatAppearance.BorderSize = 0;
+            this.btSalvar.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.btSalvar.Image = global::ControleEstoque.Properties.Resources.save;
+            this.btSalvar.Location = new System.Drawing.Point(10, 471);
+            this.btSalvar.Margin = new System.Windows.Forms.Padding(0);
+            this.btSalvar.Name = "btSalvar";
+            this.btSalvar.Size = new System.Drawing.Size(35, 31);
+            this.btSalvar.TabIndex = 36;
+            this.btSalvar.UseVisualStyleBackColor = true;
+            this.btSalvar.Click += new System.EventHandler(this.btSalvar_Click);
+            // 
             // FrmPedidos
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -816,7 +819,7 @@
             this.ClientSize = new System.Drawing.Size(1067, 511);
             this.Controls.Add(this.label23);
             this.Controls.Add(this.txtValorPago);
-            this.Controls.Add(this.cbPraça);
+            this.Controls.Add(this.cbbPraça);
             this.Controls.Add(this.cbAtivo);
             this.Controls.Add(this.txtEstado);
             this.Controls.Add(this.label22);
@@ -952,8 +955,8 @@
         private System.Windows.Forms.TextBox txtEstado;
         private System.Windows.Forms.Label label22;
         private System.Windows.Forms.CheckBox cbAtivo;
-        private System.Windows.Forms.ComboBox cbPraça;
-        private System.Windows.Forms.Button button1;
+        private System.Windows.Forms.ComboBox cbbPraça;
+        private System.Windows.Forms.Button btEstornar;
         private System.Windows.Forms.Label label23;
         private System.Windows.Forms.TextBox txtValorPago;
     }

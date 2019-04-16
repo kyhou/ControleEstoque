@@ -17,24 +17,15 @@ namespace ControleEstoque
         FrmVendedores vendedoresForm = new FrmVendedores();
         FrmProdutos produtosForm = new FrmProdutos();
         FrmPedidos pedidosForm = new FrmPedidos();
+        FrmDeposito depositoForm = new FrmDeposito();
+        FrmCargaDevolução cargaDevoluçãoForm = new FrmCargaDevolução();
+        FrmImpressão impressãoForm = new FrmImpressão();
+        FrmRelatorios relatoriosForm = new FrmRelatorios();
 
         public Main()
         {
             InitializeComponent();
         }
-
-        /*private void ShowForm<T>(T formObject)
-        {
-            if (formObject.Visible)
-            {
-                formObject.BringToFront();
-            }
-            else
-            {
-                formObject = new Form();
-                formObject.Show();
-            }
-        }*/
 
         private void BtFrmPessoas_Click(object sender, EventArgs e)
         {
@@ -98,6 +89,58 @@ namespace ControleEstoque
             {
                 pedidosForm = new FrmPedidos();
                 pedidosForm.Show();
+            }
+        }
+
+        private void btFrmDepositos_Click(object sender, EventArgs e)
+        {
+            if (depositoForm.Visible)
+            {
+                depositoForm.BringToFront();
+            }
+            else
+            {
+                depositoForm = new FrmDeposito();
+                depositoForm.Show();
+            }
+        }
+
+        private void btFrmCargaDevolução_Click(object sender, EventArgs e)
+        {
+            if (cargaDevoluçãoForm.Visible)
+            {
+                cargaDevoluçãoForm.BringToFront();
+            }
+            else
+            {
+                cargaDevoluçãoForm = new FrmCargaDevolução();
+                cargaDevoluçãoForm.Show();
+            }
+        }
+
+        private void btFrmImpressão_Click(object sender, EventArgs e)
+        {
+            if (impressãoForm.Visible)
+            {
+                impressãoForm.BringToFront();
+            }
+            else
+            {
+                impressãoForm = new FrmImpressão();
+                impressãoForm.Show();
+            }
+        }
+
+        private void btFrmRelatorios_Click(object sender, EventArgs e)
+        {
+            if (relatoriosForm.Visible)
+            {
+                relatoriosForm.BringToFront();
+            }
+            else
+            {
+                relatoriosForm = new FrmRelatorios();
+                relatoriosForm.Show();
             }
         }
     }

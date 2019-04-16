@@ -66,6 +66,11 @@
             this.txtEstado = new System.Windows.Forms.TextBox();
             this.label11 = new System.Windows.Forms.Label();
             this.cbAtivo = new System.Windows.Forms.CheckBox();
+            this.txtIdPraça = new System.Windows.Forms.TextBox();
+            this.btSearchPraça = new System.Windows.Forms.Button();
+            this.label12 = new System.Windows.Forms.Label();
+            this.txtNomePraça = new System.Windows.Forms.TextBox();
+            this.cbCliente = new System.Windows.Forms.CheckBox();
             this.panel1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.errorProvider)).BeginInit();
             this.SuspendLayout();
@@ -376,7 +381,7 @@
             this.btLimpar.FlatAppearance.BorderSize = 0;
             this.btLimpar.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.btLimpar.Image = global::ControleEstoque.Properties.Resources.delete_sign;
-            this.btLimpar.Location = new System.Drawing.Point(52, 183);
+            this.btLimpar.Location = new System.Drawing.Point(53, 221);
             this.btLimpar.Margin = new System.Windows.Forms.Padding(0);
             this.btLimpar.Name = "btLimpar";
             this.btLimpar.Size = new System.Drawing.Size(35, 31);
@@ -389,7 +394,7 @@
             this.btSalvar.FlatAppearance.BorderSize = 0;
             this.btSalvar.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.btSalvar.Image = global::ControleEstoque.Properties.Resources.save;
-            this.btSalvar.Location = new System.Drawing.Point(11, 183);
+            this.btSalvar.Location = new System.Drawing.Point(12, 221);
             this.btSalvar.Margin = new System.Windows.Forms.Padding(0);
             this.btSalvar.Name = "btSalvar";
             this.btSalvar.Size = new System.Drawing.Size(35, 31);
@@ -423,11 +428,62 @@
             this.cbAtivo.Text = "Ativo";
             this.cbAtivo.UseVisualStyleBackColor = true;
             // 
+            // txtIdPraça
+            // 
+            this.txtIdPraça.Enabled = false;
+            this.txtIdPraça.Location = new System.Drawing.Point(12, 190);
+            this.txtIdPraça.Name = "txtIdPraça";
+            this.txtIdPraça.Size = new System.Drawing.Size(73, 20);
+            this.txtIdPraça.TabIndex = 65;
+            // 
+            // btSearchPraça
+            // 
+            this.btSearchPraça.FlatAppearance.BorderSize = 0;
+            this.btSearchPraça.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.btSearchPraça.Image = global::ControleEstoque.Properties.Resources.search_16;
+            this.btSearchPraça.Location = new System.Drawing.Point(91, 189);
+            this.btSearchPraça.Name = "btSearchPraça";
+            this.btSearchPraça.Size = new System.Drawing.Size(21, 21);
+            this.btSearchPraça.TabIndex = 63;
+            this.btSearchPraça.UseVisualStyleBackColor = true;
+            this.btSearchPraça.Click += new System.EventHandler(this.btSearchPraça_Click);
+            // 
+            // label12
+            // 
+            this.label12.AutoSize = true;
+            this.label12.Location = new System.Drawing.Point(12, 174);
+            this.label12.Name = "label12";
+            this.label12.Size = new System.Drawing.Size(71, 13);
+            this.label12.TabIndex = 64;
+            this.label12.Text = "Código Praça";
+            // 
+            // txtNomePraça
+            // 
+            this.txtNomePraça.Location = new System.Drawing.Point(118, 190);
+            this.txtNomePraça.Name = "txtNomePraça";
+            this.txtNomePraça.Size = new System.Drawing.Size(445, 20);
+            this.txtNomePraça.TabIndex = 62;
+            // 
+            // cbCliente
+            // 
+            this.cbCliente.AutoSize = true;
+            this.cbCliente.Location = new System.Drawing.Point(569, 192);
+            this.cbCliente.Name = "cbCliente";
+            this.cbCliente.Size = new System.Drawing.Size(58, 17);
+            this.cbCliente.TabIndex = 66;
+            this.cbCliente.Text = "Cliente";
+            this.cbCliente.UseVisualStyleBackColor = true;
+            // 
             // FrmPessoas
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(810, 226);
+            this.ClientSize = new System.Drawing.Size(810, 261);
+            this.Controls.Add(this.cbCliente);
+            this.Controls.Add(this.txtIdPraça);
+            this.Controls.Add(this.btSearchPraça);
+            this.Controls.Add(this.label12);
+            this.Controls.Add(this.txtNomePraça);
             this.Controls.Add(this.cbAtivo);
             this.Controls.Add(this.txtEstado);
             this.Controls.Add(this.label11);
@@ -505,5 +561,10 @@
         private System.Windows.Forms.TextBox txtEstado;
         private System.Windows.Forms.Label label11;
         private System.Windows.Forms.CheckBox cbAtivo;
+        private System.Windows.Forms.TextBox txtIdPraça;
+        private System.Windows.Forms.Button btSearchPraça;
+        private System.Windows.Forms.Label label12;
+        private System.Windows.Forms.TextBox txtNomePraça;
+        private System.Windows.Forms.CheckBox cbCliente;
     }
 }

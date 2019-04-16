@@ -23,6 +23,29 @@ namespace ControleEstoque
 
         private bool isEditing = false;
         private int _atualID;
+        private bool _finalizado = false;
+
+        private bool Finalizado
+        {
+            get { return _finalizado; }
+            set
+            {
+                _finalizado = value;
+
+                if (value)
+                {
+                    btConfirmarVenda.Enabled = false;
+                    btEstornar.Enabled = true;
+                    btAlterar.Enabled = false;
+                }
+                else
+                {
+                    btConfirmarVenda.Enabled = true;
+                    btEstornar.Enabled = false;
+                    btAlterar.Enabled = true;
+                }
+            }
+        }
 
         private int AtualID
         {
@@ -36,7 +59,7 @@ namespace ControleEstoque
 
         List<string> parameters = new List<string>
         {
-            "PessoaID", "VendedorID", "PraçaID", "DataEmissão", "TotalUnidades", "TotalItens", "Comissão", "DataRetorno"
+            "PessoaID", "VendedorID", "PraçaID", "DataEmissão", "TotalUnidades", "TotalItens", "Comissão", "DataRetorno", "ValorTotal", "ValorPago", "Finalizado"
         };
 
         List<string> ItemParameters = new List<string>
@@ -51,6 +74,9 @@ namespace ControleEstoque
             DesativarCampos();
             btPesquisar.Enabled = true;
             btAdd.Enabled = true;
+            btConfirmarVenda.Enabled = false;
+            btEstornar.Enabled = false;
+            btAlterar.Enabled = false;
         }
 
         private void DesativarCampos()
@@ -75,6 +101,7 @@ namespace ControleEstoque
             txtComissão.Enabled = false;
             txtComissãoValor.Enabled = false;
             txtPreçoFinal.Enabled = false;
+            txtValorPago.Enabled = false;
             btSearchPessoa.Enabled = false;
             btSearchVendedor.Enabled = false;
 
@@ -87,10 +114,10 @@ namespace ControleEstoque
             btLimpar.Enabled = false;
             btAdd.Enabled = false;
             btExcluir.Enabled = false;
-            btAlterar.Enabled = false;
-            btConfirmarVenda.Enabled = false;
+            //btAlterar.Enabled = false;
+            //btConfirmarVenda.Enabled = false;
             cbAtivo.Enabled = false;
-            cbPraça.Enabled = false;
+            cbbPraça.Enabled = false;
         }
 
         private void AtivarCampos()
@@ -115,8 +142,10 @@ namespace ControleEstoque
             txtComissão.Enabled = true;
             //txtComissãoValor.Enabled = true;
             //txtPreçoFinal.Enabled = true;
+            txtValorPago.Enabled = true;
             btSearchPessoa.Enabled = true;
             btSearchVendedor.Enabled = true;
+            cbbPraça.Enabled = true;
 
             btPrimeiro.Enabled = true;
             btPesquisar.Enabled = true;
@@ -127,9 +156,7 @@ namespace ControleEstoque
             btLimpar.Enabled = true;
             btAdd.Enabled = true;
             btExcluir.Enabled = true;
-            btAlterar.Enabled = true;
-            btConfirmarVenda.Enabled = true;
-            cbPraça.Enabled = true; 
+            //btAlterar.Enabled = true;
         }
 
         private void LimparCampos()
@@ -157,15 +184,14 @@ namespace ControleEstoque
             txtIdVendedor.Text = "";
             txtNomeVendedor.Text = "";
             txtTelefoneVendedor.Text = "";
-            //txtPraçaVendedor.Text = "";
-            cbPraça.Items.Clear();
             txtTotalItens.Text = "";
             txtTotalPeças.Text = "";
+            txtValorPago.Text = "";
             txtComissão.Text = "";
             txtComissãoValor.Text = "";
             txtPreçoFinal.Text = "";
             cbAtivo.Checked = false;
-            cbPraça.Items.Clear();
+            cbbPraça.Items.Clear();
         }
 
         private void ShowSelected(PedidoModelo modelo)
@@ -206,16 +232,22 @@ namespace ControleEstoque
             foreach (VendedorPraçaModelo vendedorPraça in vendedorPraçaList)
             {
                 PraçaModelo praça = SqliteAcessoDados.LoadQuery<PraçaModelo>("select * from Praça where Praça.ID == " + vendedorPraça.PraçaId.ToString()).First();
-                cbPraça.Items.Add(praça.Id + " - " + praça.Nome);
+                cbbPraça.Items.Add(praça.Id + " - " + praça.Nome);
                 if (praça.Id == modelo.PraçaID)
                 {
-                    cbPraça.SelectedIndex = cbPraça.Items.Count - 1;
+                    cbbPraça.SelectedIndex = cbbPraça.Items.Count - 1;
                 }
             }
 
             txtTotalItens.Text = modelo.TotalItens.ToString();
             txtTotalPeças.Text = modelo.TotalUnidades.ToString();
             txtComissão.Text = modelo.Comissão.ToString();
+
+            txtValorPago.Text = modelo.ValorPago.ToString();
+            txtValorPago_Leave(null, null);
+
+            Finalizado = modelo.Finalizado;
+
             //txtComissãoValor.Text = "add logica";
         }
 
@@ -314,12 +346,15 @@ namespace ControleEstoque
                 Id = int.Parse(txtID.Text),
                 PessoaID = int.Parse(txtIdPessoa.Text),
                 VendedorID = int.Parse(txtIdVendedor.Text),
-                PraçaID = int.Parse(cbPraça.SelectedItem.ToString().Split('-').First()),
+                PraçaID = int.Parse(cbbPraça.SelectedItem.ToString().Split('-').First()),
                 DataEmissão = DateTime.Parse(txtDataEmissão.Text),
                 TotalUnidades = int.Parse(txtTotalPeças.Text),
                 TotalItens = int.Parse(txtTotalItens.Text),
                 Comissão = float.Parse(txtComissão.Text),
-                DataRetorno = DateTime.Parse(txtDataRetorno.Text)
+                DataRetorno = DateTime.Parse(txtDataRetorno.Text),
+                ValorTotal = decimal.Parse(txtPreçoFinal.Text.Replace("R$ ", "")),
+                ValorPago = decimal.Parse(txtValorPago.Text.Replace("R$ ", "")),
+                Finalizado = Finalizado
             };
 
             if (isEditing)
@@ -372,7 +407,10 @@ namespace ControleEstoque
             txtID.Text = (ID + 1).ToString();
 
             txtDataEmissão.Text = DateTime.Now.Date.ToShortDateString();
+            txtDataRetorno.Text = DateTime.Now.Date.AddMonths(1).ToShortDateString();
             txtComissão.Text = "20";
+            txtValorPago.Text = "0";
+            txtValorPago_Leave(null,null);
         }
 
         private void btLimpar_Click(object sender, EventArgs e)
@@ -403,7 +441,7 @@ namespace ControleEstoque
                 {
                     LimparCampos();
                     ShowSelected(Pedidos[AtualID]);
-                    btAlterar.Enabled = true;
+                    //btAlterar.Enabled = true;
                     btExcluir.Enabled = true;
                 }
 
@@ -438,7 +476,7 @@ namespace ControleEstoque
                 {
                     if (isEditing)
                     {
-                        SqliteAcessoDados.UpdateQuery<PedidoModelo>(AddPedido(), "Pedido", parameters);
+                        /*SqliteAcessoDados.UpdateQuery<PedidoModelo>(AddPedido(), "Pedido", parameters);
 
                         foreach (ItemModelo item in ItensList)
                         {
@@ -449,21 +487,28 @@ namespace ControleEstoque
                         foreach (ItemModelo item in ItensList)
                         {
                             SqliteAcessoDados.SaveQuery<ItemModelo>(item, "Item", ItemParameters);
-                        }
+                        }*/
+                        UpdatePedido();
+                        DeleteItens();
+                        IncludeItens();
+
                     }
                     else
                     {
-                        SqliteAcessoDados.SaveQuery<PedidoModelo>(AddPedido(), "Pedido", parameters);
+                        /*SqliteAcessoDados.SaveQuery<PedidoModelo>(AddPedido(), "Pedido", parameters);
 
                         ItensList = AddItens();
                         foreach (ItemModelo item in ItensList)
                         {
                             SqliteAcessoDados.SaveQuery<ItemModelo>(item, "Item", ItemParameters);
-                        }
+                        }*/
+
+                        IncludePedido();
+                        IncludeItens();
                     }
 
                     DesativarCampos();
-                    btAlterar.Enabled = true;
+                    //btAlterar.Enabled = true;
                     btExcluir.Enabled = true;
                     btPesquisar.Enabled = true;
                     btAdd.Enabled = true;
@@ -481,9 +526,38 @@ namespace ControleEstoque
             }
         }
 
+        private void IncludePedido()
+        {
+            SqliteAcessoDados.SaveQuery<PedidoModelo>(AddPedido(), "Pedido", parameters);
+        }
+
+        private void UpdatePedido()
+        {
+            SqliteAcessoDados.UpdateQuery<PedidoModelo>(AddPedido(), "Pedido", parameters);
+        }
+
+        private void DeleteItens()
+        {
+            foreach (ItemModelo item in ItensList)
+            {
+                SqliteAcessoDados.ExcluirQuery(item.PedidoId, "Item", "PedidoId");
+
+                ItensList.Clear();
+            }
+        }
+
+        private void IncludeItens()
+        {
+            ItensList = AddItens();
+            foreach (ItemModelo item in ItensList)
+            {
+                SqliteAcessoDados.SaveQuery<ItemModelo>(item, "Item", ItemParameters);
+            }
+        }
+
         private void btPesquisa_Click(object sender, EventArgs e)
         {
-            using (var form = new FrmProcura("Pedido", parameters))
+            using (var form = new FrmProcura(this.Name, "Pedido", parameters))
             {
                 var result = form.ShowDialog();
                 if (result == DialogResult.OK)
@@ -491,7 +565,7 @@ namespace ControleEstoque
                     Pedidos = form.TableObjectPedido;
                     AtualID = form.ResultID;
 
-                    btAlterar.Enabled = true;
+                    //btAlterar.Enabled = true;
                     btExcluir.Enabled = true;
                 }
             }
@@ -539,6 +613,8 @@ namespace ControleEstoque
                 btUltimo.Enabled = false;
                 btPrimeiro.Enabled = false;
                 btProximo.Enabled = false;
+                btConfirmarVenda.Enabled = false;
+                btEstornar.Enabled = false;
             }
         }
 
@@ -570,12 +646,7 @@ namespace ControleEstoque
 
         private void btSearchVendedor_Click(object sender, EventArgs e)
         {
-            List<string> parameters = new List<string>
-            {
-                "PessoaID", "Placa", "CNH"
-            };
-
-            using (var form = new FrmProcura("Vendedor", parameters))
+            using (var form = new FrmProcura(this.Name, "Vendedor", FrmVendedores.VendedorParameters))
             {
                 var result = form.ShowDialog();
                 if (result == DialogResult.OK)
@@ -589,10 +660,12 @@ namespace ControleEstoque
 
                     List<VendedorPraçaModelo> vendedorPraça = SqliteAcessoDados.LoadQuery<VendedorPraçaModelo>("select * from VendedorPraça where VendedorPraça.VendedorID == " + ResultadoPesquisaVendedor.Id.ToString());
 
+                    cbbPraça.Items.Clear();
+
                     foreach (VendedorPraçaModelo modelo in vendedorPraça)
                     {
                         PraçaModelo praça = SqliteAcessoDados.LoadQuery<PraçaModelo>("select * from Praça where Praça.ID == " + modelo.PraçaId.ToString()).First();
-                        cbPraça.Items.Add(praça.Id + " - " + praça.Nome);
+                        cbbPraça.Items.Add(praça.Id + " - " + praça.Nome);
                     }
                 }
             }
@@ -602,11 +675,12 @@ namespace ControleEstoque
         {
             List<string> parameters = new List<string>
             {
-                "Nome", "Nascimento", "RG", "CPF", "Telefone", "PontoReferencia", "Endereco", "Numero", "Bairro", "Cidade", "Estado", "Ativo"
+                "PraçaID", "Nome", "Nascimento", "RG", "CPF", "Telefone", "PontoReferencia", "Endereco", "Numero", "Bairro", "Cidade", "Estado", "Cliente", "Ativo"
             };
 
-            using (var form = new FrmProcura("Pessoa", parameters))
+            using (var form = new FrmProcura(this.Name, "Pessoa", parameters))
             {
+                //var asd = this.Name;
                 var result = form.ShowDialog();
                 if (result == DialogResult.OK)
                 {
@@ -641,7 +715,7 @@ namespace ControleEstoque
                     "Descrição", "Unidade", "Estoque", "PreçoCusto", "PreçoVenda"
                 };
 
-                using (var form = new FrmProcura("Produto", parameters))
+                using (var form = new FrmProcura(this.Name, "Produto", parameters))
                 {
                     var result = form.ShowDialog();
                     if (result == DialogResult.OK)
@@ -664,10 +738,6 @@ namespace ControleEstoque
             }
         }
 
-        private void btConfirmarVenda_Click(object sender, EventArgs e)
-        {
-
-        }
 
         private void DgvItem_CellEndEdit(object sender, DataGridViewCellEventArgs e)
         {
@@ -857,6 +927,36 @@ namespace ControleEstoque
             }
 
             TxtComissão_Leave(null, null);
+        }
+
+        private void txtValorPago_Enter(object sender, EventArgs e)
+        {
+            txtValorPago.Text = txtValorPago.Text.ToString().Replace("R$ ", "");
+        }
+
+        private void txtValorPago_Leave(object sender, EventArgs e)
+        {
+            txtValorPago.Text = string.Format("{0:C}", decimal.Parse(txtValorPago.Text));
+        }
+
+        private void btConfirmarVenda_Click(object sender, EventArgs e)
+        {
+            DialogResult result = MessageBox.Show("Confirma Finalizar o Pedido?", "Confirmar", MessageBoxButtons.YesNo);
+            if (result == DialogResult.Yes)
+            {
+                Finalizado = true;
+                UpdatePedido();
+            }
+        }
+
+        private void btEstornar_Click(object sender, EventArgs e)
+        {
+            DialogResult result = MessageBox.Show("Confirma Estornar o Pedido?", "Confirmar", MessageBoxButtons.YesNo);
+            if (result == DialogResult.Yes)
+            {
+                Finalizado = false;
+                UpdatePedido();
+            }
         }
     }
 }
