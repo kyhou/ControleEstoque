@@ -55,8 +55,6 @@ namespace ControleEstoque
                             }
                         }
 
-                        DialogResult result = MessageBox.Show("Relatorio gerado na pasta Meus Documentos -> Impressões ( " + (Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments) + "\\Impressões)"), "Atenção!", MessageBoxButtons.OK);
-
                         /*ProcessStartInfo info = new ProcessStartInfo(docPath);
 
                         info.Verb = "Print";
@@ -79,9 +77,18 @@ namespace ControleEstoque
                         {
                             printDoc.Print();
                         }*/
+
                         if (dgvListaImpressão.Rows.Count > 1)
                         {
-                            docForPrint.Save();
+                            try
+                            {
+                                docForPrint.Save();
+                                DialogResult result = MessageBox.Show("Relatorio gerado na pasta Meus Documentos -> Impressões ( " + (Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments) + "\\Impressões)"), "Atenção!", MessageBoxButtons.OK);
+                            }
+                            catch
+                            {
+                                DialogResult resultDialog = MessageBox.Show("Arquivo aberto em outro aplicativo, favor fecha-lo antes de continuar", "Atenção!", MessageBoxButtons.OK);
+                            }
                         }
                     }
                     else
@@ -104,7 +111,7 @@ namespace ControleEstoque
         {
             string id = row.Cells["txtCodigo"].Value.ToString();
             string nome = row.Cells["txtNome"].Value.ToString();
-            string docPath = Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments) + "\\Impressões";
+            string docPath = Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments) + "\\Impressões\\" + cbbPraça.SelectedItem.ToString();
             string fileName = "Pedido - " + id + " - " + nome + ".docx";
 
             System.IO.Directory.CreateDirectory(docPath);
@@ -115,171 +122,188 @@ namespace ControleEstoque
 
             using (var document = DocX.Create(docPath))
             {
-
-                document.MarginLeft = 36; // 1cm = 28.3464567pt
-                document.MarginRight = 36;
-                document.MarginTop = 36;
-                document.MarginBottom = 36;
-                document.InsertParagraph("SABOR MINEIRO - PEDIDO").FontSize(11d).Bold().Alignment = Alignment.center;
-                document.InsertParagraph();
-
-                document.InsertParagraph("NOME: ")
-                    .Bold()
-                    .FontSize(10d)
-                    .Append(pessoa.Nome + "     ")//"________________________________________________________________") // adicionar logicas \/
-                    .FontSize(10d)
-                    .Append("DATA DE NASCIMENTO: ")
-                    .Bold()
-                    .FontSize(10d)
-                    .Append(pessoa.Nascimento.ToShortDateString())//"___ / ___ / ___")
-                    .FontSize(10d)
-                    .Alignment = Alignment.left;
-
-                document.InsertParagraph("RG: ")
-                    .Bold()
-                    .FontSize(10d)
-                    .Append(pessoa.RG + "     ") //"_______________________________ ")
-                    .FontSize(10d)
-                    .Append("CPF: ")
-                    .Bold()
-                    .FontSize(10d)
-                    .Append(pessoa.CPF + "     ") //"______________________________")
-                    .FontSize(10d)
-                    .Append("TELEFONE: ")
-                    .Bold()
-                    .FontSize(10d)
-                    .Append(pessoa.Telefone ) //"(___)_____________________")
-                    .FontSize(10d)
-                    .Alignment = Alignment.left;
-
-                document.InsertParagraph("INDICACÃO: ")
-                    .Bold()
-                    .FontSize(10d)
-                    .Append(pessoa.PontoReferencia + "     ") //"______________________________________________________________________________________________")
-                    .FontSize(10d)
-                    .Alignment = Alignment.left;
-
-                document.InsertParagraph("ENDEREÇO: ")
-                    .Bold()
-                    .FontSize(10d)
-                    .Append(pessoa.Endereco + " " + pessoa.Numero + "     ") //"_____________________________________________________________________________________________")
-                    .FontSize(10d)
-                    .Alignment = Alignment.left;
-
-                document.InsertParagraph("BAIRRO: ")
-                    .Bold()
-                    .FontSize(10d)
-                    .Append(pessoa.Bairro + "     ") //"____________________________________________________________")
-                    .FontSize(10d)
-                    .Append("CIDADE: ")
-                    .Bold()
-                    .FontSize(10d)
-                    .Append(pessoa.Cidade + " - " + pessoa.Estado + "     ") //"______________________________")
-                    .FontSize(10d)
-                    .Alignment = Alignment.left;
-
-                document.InsertParagraph("VENDEDOR: ")
-                    .Bold()
-                    .FontSize(10d)
-                    .Append(txtNomeVendedor.Text + "     ") //"__ __________")
-                    .FontSize(10d)
-                    .Append("TELEFONE: ")
-                    .Bold()
-                    .FontSize(10d)
-                    .Append(txtTelefoneVendedor.Text + "     ") //"(___)_____________________")
-                    .FontSize(10d)
-                    .Append("PRAÇA: ")
-                    .Bold()
-                    .FontSize(10d)
-                    .Append(cbbPraça.Text + "     ") //"__ - ___________")
-                    .FontSize(10d)
-                    .Alignment = Alignment.left;
-
-                document.InsertParagraph();
-
-                Table t = document.AddTable(11, 7);
-                t.Design = TableDesign.LightGridAccent3;
-                t.Alignment = Alignment.center;
-                t.AutoFit = AutoFit.Contents;
-
-                t.Rows[0].Cells[0].Paragraphs.First().Append("PRODUTO").FontSize(10d).Alignment = Alignment.center;
-                t.Rows[0].Cells[1].Paragraphs.First().Append("ENTREGUE").FontSize(10d).Alignment = Alignment.center;
-                t.Rows[0].MergeCells(1, 2);
-                t.Rows[0].Cells[2].Paragraphs.First().Append("DEVOLVIDO").FontSize(10d).Alignment = Alignment.center;
-                t.Rows[0].Cells[3].Paragraphs.First().Append("VENDIDO").FontSize(10d).Alignment = Alignment.center;
-                t.Rows[0].Cells[4].Paragraphs.First().Append("VALOR UNIT").FontSize(10d).Alignment = Alignment.center;
-                t.Rows[0].Cells[5].Paragraphs.First().Append("TOTAL").FontSize(10d).Alignment = Alignment.center;
-
-                t.Rows[1].Cells[0].Paragraphs.First().Append("CONE").FontSize(10d);
-                t.Rows[2].Cells[0].Paragraphs.First().Append("BISCOITO").FontSize(10d);
-                t.Rows[3].Cells[0].Paragraphs.First().Append("DOCE DE LEITE / COCADA CREMOSA").FontSize(10d);
-                t.Rows[4].Cells[0].Paragraphs.First().Append("MEL").FontSize(10d);
-                t.Rows[5].Cells[0].Paragraphs.First().Append("PAÇOCA / PÉ DE MOÇA").FontSize(10d);
-                t.Rows[6].Cells[0].Paragraphs.First().Append("TRUFA").FontSize(10d);
-                t.Rows[7].Cells[0].Paragraphs.First().Append("PICADINHO").FontSize(10d);
-                t.Rows[8].Cells[0].Paragraphs.First().Append("QUEIJO").FontSize(10d);
-
-
-                /*foreach (Row tableRow in t.Rows)
+                for (int i = 0; i < 2; i++)
                 {
-                    for (int i = 0; i < tableRow.Cells.Count; i++)
+                    document.MarginLeft = 36; // 1cm = 28.3464567pt
+                    document.MarginRight = 36;
+                    document.MarginTop = 36;
+                    document.MarginBottom = 36;
+
+                    document.InsertParagraph("S&S BISCOITOS DI MINAS")
+                        .FontSize(11d)
+                        .Bold()
+                        .Alignment = Alignment.center;
+
+                    document.InsertParagraph("PEDIDO Nº:")
+                        .FontSize(10d)
+                        .Bold()
+                        .Append(" ____")
+                        .FontSize(10d)
+                        .Alignment = Alignment.right;
+
+                    document.InsertParagraph("NOME: ")
+                        .Bold()
+                        .FontSize(10d)
+                        .Append(pessoa.Nome + "     ")//"________________________________________________________________") // adicionar logicas \/
+                        .FontSize(10d)
+                        .Append("DATA DE NASCIMENTO: ")
+                        .Bold()
+                        .FontSize(10d)
+                        .Append(pessoa.Nascimento.ToShortDateString())//"___ / ___ / ___")
+                        .FontSize(10d)
+                        .Alignment = Alignment.left;
+
+                    document.InsertParagraph("RG: ")
+                        .Bold()
+                        .FontSize(10d)
+                        .Append(pessoa.RG + "     ") //"_______________________________ ")
+                        .FontSize(10d)
+                        .Append("CPF: ")
+                        .Bold()
+                        .FontSize(10d)
+                        .Append(pessoa.CPF + "     ") //"______________________________")
+                        .FontSize(10d)
+                        .Append("TELEFONE: ")
+                        .Bold()
+                        .FontSize(10d)
+                        .Append(pessoa.Telefone) //"(___)_____________________")
+                        .FontSize(10d)
+                        .Alignment = Alignment.left;
+
+                    document.InsertParagraph("PONTO DE REFERÊNCIA: ")
+                        .Bold()
+                        .FontSize(10d)
+                        .Append(pessoa.PontoReferencia + "     ") //"______________________________________________________________________________________________")
+                        .FontSize(10d)
+                        .Alignment = Alignment.left;
+
+                    document.InsertParagraph("ENDEREÇO: ")
+                        .Bold()
+                        .FontSize(10d)
+                        .Append(pessoa.Endereco + " " + pessoa.Numero + "     ") //"_____________________________________________________________________________________________")
+                        .FontSize(10d)
+                        .Alignment = Alignment.left;
+
+                    document.InsertParagraph("BAIRRO: ")
+                        .Bold()
+                        .FontSize(10d)
+                        .Append(pessoa.Bairro + "     ") //"____________________________________________________________")
+                        .FontSize(10d)
+                        .Append("CIDADE: ")
+                        .Bold()
+                        .FontSize(10d)
+                        .Append(pessoa.Cidade + " - " + pessoa.Estado + "     ") //"______________________________")
+                        .FontSize(10d)
+                        .Alignment = Alignment.left;
+
+                    document.InsertParagraph("VENDEDOR: ")
+                        .Bold()
+                        .FontSize(10d)
+                        .Append(txtNomeVendedor.Text + "     ") //"__ __________")
+                        .FontSize(10d)
+                        .Append("TELEFONE: ")
+                        .Bold()
+                        .FontSize(10d)
+                        .Append(txtTelefoneVendedor.Text + "     ") //"(___)_____________________")
+                        .FontSize(10d)
+                        .Append("PRAÇA: ")
+                        .Bold()
+                        .FontSize(10d)
+                        .Append(cbbPraça.Text + "     ") //"__ - ___________")
+                        .FontSize(10d)
+                        .Alignment = Alignment.left;
+
+                    Table t = document.AddTable(11, 7);
+                    t.Design = TableDesign.LightGridAccent3;
+                    t.Alignment = Alignment.center;
+                    t.AutoFit = AutoFit.Contents;
+
+                    t.Rows[0].Cells[0].Paragraphs.First().Append("PRODUTO").FontSize(10d).Alignment = Alignment.center;
+                    t.Rows[0].Cells[1].Paragraphs.First().Append("ENTREGUE").FontSize(10d).Alignment = Alignment.center;
+                    t.Rows[0].MergeCells(1, 2);
+                    t.Rows[0].Cells[2].Paragraphs.First().Append("D").FontSize(10d).Alignment = Alignment.center;
+                    t.Rows[0].Cells[3].Paragraphs.First().Append("V").FontSize(10d).Alignment = Alignment.center;
+                    t.Rows[0].Cells[4].Paragraphs.First().Append("VALOR UNIT").FontSize(10d).Alignment = Alignment.center;
+                    t.Rows[0].Cells[5].Paragraphs.First().Append("                                    TOTAL").FontSize(10d).Alignment = Alignment.center;
+
+                    t.Rows[1].Cells[0].Paragraphs.First().Append("CONE").FontSize(10d);
+                    t.Rows[2].Cells[0].Paragraphs.First().Append("BISCOITO").FontSize(10d);
+                    t.Rows[3].Cells[0].Paragraphs.First().Append("DOCE DE LEITE / COCADA CREMOSA").FontSize(10d);
+                    t.Rows[4].Cells[0].Paragraphs.First().Append("MEL").FontSize(10d);
+                    t.Rows[5].Cells[0].Paragraphs.First().Append("PAÇOCA / PÉ DE MOÇA").FontSize(10d);
+                    t.Rows[6].Cells[0].Paragraphs.First().Append("TRUFA").FontSize(10d);
+                    t.Rows[7].Cells[0].Paragraphs.First().Append("PICADINHO").FontSize(10d);
+                    t.Rows[8].Cells[0].Paragraphs.First().Append("QUEIJO").FontSize(10d);
+
+                    /*foreach (Row tableRow in t.Rows)
                     {
-                        switch (i)
+                        for (int i = 0; i < tableRow.Cells.Count; i++)
                         {
-                            case 0:
-                                tableRow.Cells[i].Width = 5.89 * 28.3464567;
-                                break;
-                            case 1:
-                                tableRow.Cells[i].Width = 2.59 * 28.3464567;
-                                break;
-                            case 2:
-                                tableRow.Cells[i].Width = 2.59 * 28.3464567;
-                                break;
-                            case 3:
-                                tableRow.Cells[i].Width = 1.18 * 28.3464567;
-                                break;
-                            case 4:
-                                tableRow.Cells[i].Width = 1.18 * 28.3464567;
-                                break;
-                            case 5:
-                                tableRow.Cells[i].Width = 2.12 * 28.3464567;
-                                break;
-                            case 6:
-                                tableRow.Cells[i].Width = 6.6 * 28.3464567;
-                                break;
-                            default:
-                                break;
+                            switch (i)
+                            {
+                                case 0:
+                                    tableRow.Cells[i].Width = 5.89 * 28.3464567;
+                                    break;
+                                case 1:
+                                    tableRow.Cells[i].Width = 2.59 * 28.3464567;
+                                    break;
+                                case 2:
+                                    tableRow.Cells[i].Width = 2.59 * 28.3464567;
+                                    break;
+                                case 3:
+                                    tableRow.Cells[i].Width = 1.18 * 28.3464567;
+                                    break;
+                                case 4:
+                                    tableRow.Cells[i].Width = 1.18 * 28.3464567;
+                                    break;
+                                case 5:
+                                    tableRow.Cells[i].Width = 2.12 * 28.3464567;
+                                    break;
+                                case 6:
+                                    tableRow.Cells[i].Width = 6.6 * 28.3464567;
+                                    break;
+                                default:
+                                    break;
+                            }
                         }
+                    }
+
+                    t.SetColumnWidth(0, );
+                    t.SetColumnWidth(1, );
+                    t.SetColumnWidth(2, 2.59 * 28.3464567);
+                    t.SetColumnWidth(3, );
+                    t.SetColumnWidth(4, 1.18 * 28.3464567);
+                    t.SetColumnWidth(5, );
+                    t.SetColumnWidth(6, );*/
+
+
+                    t.Rows[9].Height = 61.228346472;
+                    t.Rows[10].Height = 61.228346472;
+
+                    t.Rows[9].MergeCells(0, 5);
+                    t.Rows[10].MergeCells(0, 5);
+                    t.MergeCellsInColumn(0, 9, 10);
+
+                    t.Rows[9].Cells[0].InsertParagraph("TOTAL DE PEÇAS: ______________________ N° DE ITENS _").FontSize(10d)
+                        .InsertParagraphAfterSelf("OBS > ATÉ R$ 89,99 (20 %) COMISSÃO / ATÉ R$ 169,99 (25 %) COMISSÃO /").FontSize(10d)
+                        .InsertParagraphAfterSelf("ATÉ R$ 600,00 (30 %) COMISSÃO / ACIMA DE R$ 600,00 (35 %) COMISSÃO / ACIMA DE R$ 990,00 (40 %) COMISSÃO").FontSize(10d)
+                        .InsertParagraphAfterSelf("        *	NÃO TRABALHAMOS COM DEPÓSITOS EM CONTA BANCÁRIA, NEM CHEQUES").Bold().FontSize(10d)
+                        .InsertParagraphAfterSelf("        *	NÃO TRABALHAMOS COM BRINDES").Bold().FontSize(10d)
+                        .InsertParagraphAfterSelf("DATA DE RETORNO DIA   ______ / ______ / ______").FontSize(10d)
+                        .InsertParagraphAfterSelf("                                                            _________________________________").FontSize(10d)
+                        .InsertParagraphAfterSelf("                                                                                      ASSINATURA").FontSize(10d);
+
+                    document.InsertTable(t);
+
+                    if (i == 0)
+                    {
+                        document.InsertParagraph();
                     }
                 }
 
-                t.SetColumnWidth(0, );
-                t.SetColumnWidth(1, );
-                t.SetColumnWidth(2, 2.59 * 28.3464567);
-                t.SetColumnWidth(3, );
-                t.SetColumnWidth(4, 1.18 * 28.3464567);
-                t.SetColumnWidth(5, );
-                t.SetColumnWidth(6, );*/
-
-                t.Rows[9].Height = 61.228346472;
-                t.Rows[10].Height = 61.228346472;
-
-                t.Rows[9].MergeCells(0, 5);
-                t.Rows[10].MergeCells(0, 5);
-                t.MergeCellsInColumn(0, 9, 10);
-
-                t.Rows[9].Cells[0].InsertParagraph("TOTAL DE PEÇAS: ______________________ N° DE ITENS _").FontSize(10d)
-                    .InsertParagraphAfterSelf("OBS > ATÉ R$ 89,99 (20 %) COMISSÃO / ATÉ R$ 169,99 (25 %) COMISSÃO / ATÉ R$ 600,00 (30 %) COMISSÃO / ACIMA DE R$ 600,00 (35 %) COMISSÃO / ACIMA DE R$ 990,00 (40 %) COMISSÃO").FontSize(10d)
-                    .InsertParagraphAfterSelf("        *	NÃO TRABALHAMOS COM DEPÓSITOS EM CONTA BANCÁRIA, NEM CHEQUES").Bold().FontSize(10d)
-                    .InsertParagraphAfterSelf("        *	NÃO TRABALHAMOS COM BRINDES").Bold().FontSize(10d)
-                    .InsertParagraphAfterSelf("DATA DE RETORNO DIA   ______ / ______ / ______").FontSize(10d)
-                    .InsertParagraphAfterSelf("                                                            _________________________________").FontSize(10d)
-                    .InsertParagraphAfterSelf("                                                                                      ASSINATURA").FontSize(10d);
-
-                document.InsertTable(t);
-
                 document.InsertParagraph("EMPRESA FILIADA AO SPC / PAGUE EM DIA E MANTENHA SEU NOME LIMPO").Bold().FontSize(10d);
-                //document.InsertParagraph();
+
+                document.InsertSectionPageBreak();
 
                 try
                 {

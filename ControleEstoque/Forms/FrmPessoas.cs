@@ -125,8 +125,8 @@ namespace ControleEstoque
         private void ShowSelected(PessoaModelo modelo)
         {
             txtID.Text = modelo.Id.ToString();
-            txtIdPraça.Text = modelo.PraçaID.ToString();
-            txtNomePraça.Text = SqliteAcessoDados.LoadQuery<PraçaModelo>("select Nome from Praça where Praça.ID == " + modelo.PraçaID.ToString()).First().Nome;
+            txtIdPraça.Text = modelo.PraçaID != -1 ? modelo.PraçaID.ToString() : "";
+            txtNomePraça.Text = modelo.PraçaID != -1 ? SqliteAcessoDados.LoadQuery<PraçaModelo>("select Nome from Praça where Praça.ID == " + modelo.PraçaID.ToString()).First().Nome : "";
             txtName.Text = modelo.Nome;
             txtRG.Text = modelo.RG;
             txtCPF.Text = modelo.CPF;
@@ -203,7 +203,7 @@ namespace ControleEstoque
         {
             PessoaModelo modelo = new PessoaModelo
             {
-                PraçaID = int.Parse(txtIdPraça.Text),
+                PraçaID = int.TryParse(txtIdPraça.Text, out int result) ? result : -1,
                 Nome = txtName.Text,
                 Nascimento = DateTime.Parse(txtDataNascimento.Text),
                 RG = txtRG.Text,

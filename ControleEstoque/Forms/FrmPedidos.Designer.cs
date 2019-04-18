@@ -108,6 +108,8 @@
             this.btSearchPessoa = new System.Windows.Forms.Button();
             this.btLimpar = new System.Windows.Forms.Button();
             this.btSalvar = new System.Windows.Forms.Button();
+            this.label24 = new System.Windows.Forms.Label();
+            this.txtPreçoGeralFinal = new System.Windows.Forms.TextBox();
             this.panel1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.errorProvider)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.dgvItens)).BeginInit();
@@ -746,7 +748,7 @@
             // 
             // txtValorPago
             // 
-            this.txtValorPago.Location = new System.Drawing.Point(956, 478);
+            this.txtValorPago.Location = new System.Drawing.Point(850, 477);
             this.txtValorPago.Name = "txtValorPago";
             this.txtValorPago.Size = new System.Drawing.Size(100, 20);
             this.txtValorPago.TabIndex = 90;
@@ -756,7 +758,7 @@
             // label23
             // 
             this.label23.AutoSize = true;
-            this.label23.Location = new System.Drawing.Point(953, 462);
+            this.label23.Location = new System.Drawing.Point(847, 461);
             this.label23.Name = "label23";
             this.label23.Size = new System.Drawing.Size(59, 13);
             this.label23.TabIndex = 91;
@@ -812,11 +814,30 @@
             this.btSalvar.UseVisualStyleBackColor = true;
             this.btSalvar.Click += new System.EventHandler(this.btSalvar_Click);
             // 
+            // label24
+            // 
+            this.label24.AutoSize = true;
+            this.label24.Location = new System.Drawing.Point(954, 461);
+            this.label24.Name = "label24";
+            this.label24.Size = new System.Drawing.Size(88, 13);
+            this.label24.TabIndex = 93;
+            this.label24.Text = "Preço Geral Final";
+            // 
+            // txtPreçoGeralFinal
+            // 
+            this.txtPreçoGeralFinal.Enabled = false;
+            this.txtPreçoGeralFinal.Location = new System.Drawing.Point(957, 477);
+            this.txtPreçoGeralFinal.Name = "txtPreçoGeralFinal";
+            this.txtPreçoGeralFinal.Size = new System.Drawing.Size(100, 20);
+            this.txtPreçoGeralFinal.TabIndex = 92;
+            // 
             // FrmPedidos
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(1067, 511);
+            this.Controls.Add(this.label24);
+            this.Controls.Add(this.txtPreçoGeralFinal);
             this.Controls.Add(this.label23);
             this.Controls.Add(this.txtValorPago);
             this.Controls.Add(this.cbbPraça);
@@ -959,5 +980,7 @@
         private System.Windows.Forms.Button btEstornar;
         private System.Windows.Forms.Label label23;
         private System.Windows.Forms.TextBox txtValorPago;
+        private System.Windows.Forms.Label label24;
+        private System.Windows.Forms.TextBox txtPreçoGeralFinal;
     }
 }

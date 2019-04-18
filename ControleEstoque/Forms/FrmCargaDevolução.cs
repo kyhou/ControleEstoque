@@ -82,7 +82,7 @@ namespace ControleEstoque
 
             txtNomeVendedor.Text = pessoa.Nome;
             txtPlaca.Text = vendedor.Placa;
-            cbbDevolução.SelectedIndex = modelo.Devolução ? 1 : 0;
+            cbbDevolução.SelectedIndex = modelo.Devolução ? 0 : 1;
             txtData.Text = modelo.Data.ToShortDateString();
 
             ProdutosCargaDevoluçãoList = SqliteAcessoDados.LoadQuery<ProdutosCargaDevoluçãoModelo>("select * from ProdutosCargaDevolução where ProdutosCargaDevolução.CargaDevoluçãoID == " + modelo.Id.ToString());
@@ -198,7 +198,7 @@ namespace ControleEstoque
                 VendedorID = int.Parse(txtIdVendedor.Text),
                 PraçaID = int.Parse(cbbPraça.SelectedItem.ToString().Split('-').First()),
                 Data = DateTime.Parse(txtData.Text),
-                Devolução = cbbDevolução.SelectedIndex != 1
+                Devolução = cbbDevolução.SelectedIndex == 1
             };
 
             if (isEditing)

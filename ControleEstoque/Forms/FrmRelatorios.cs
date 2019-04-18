@@ -595,29 +595,30 @@ namespace ControleEstoque
 
                             List<ProdutoModelo> produtoList = SqliteAcessoDados.GetPesquisarTodos<ProdutoModelo>();
 
-                            foreach (CargaDevoluçãoModelo cargaDevolução in cargaDevoluçãoList)
+
+                            foreach (ProdutoModelo produto in produtoList)
                             {
-                                foreach (ProdutoModelo produto in produtoList)
+                                document.InsertParagraph();
+
+                                document.InsertParagraph("PRODUTO: ")
+                                        .FontSize(10d)
+                                        .Bold()
+                                        .Append(produto.Descrição)
+                                        .Alignment = Alignment.left;
+
+                                document.InsertParagraph();
+
+                                t = document.AddTable(1, 3);
+
+                                t.Rows[0].Cells[0].Paragraphs.First().Append("DATA").Bold().FontSize(10d).Alignment = Alignment.center;
+                                t.Rows[0].Cells[1].Paragraphs.First().Append("CARGA/DEVOLUÇÃO").Bold().FontSize(10d).Alignment = Alignment.center;
+                                t.Rows[0].Cells[2].Paragraphs.First().Append("QUANTIDADE").Bold().FontSize(10d).Alignment = Alignment.center;
+
+                                int quantidade = 0;
+
+                                foreach (CargaDevoluçãoModelo cargaDevolução in cargaDevoluçãoList)
                                 {
-                                    document.InsertParagraph();
-
-                                    document.InsertParagraph("PRODUTO: ")
-                                            .FontSize(10d)
-                                            .Bold()
-                                            .Append(produto.Descrição)
-                                            .Alignment = Alignment.left;
-
-                                    document.InsertParagraph();
-
-                                    t = document.AddTable(1, 3);
-
-                                    t.Rows[0].Cells[0].Paragraphs.First().Append("DATA").Bold().FontSize(10d).Alignment = Alignment.center;
-                                    t.Rows[0].Cells[1].Paragraphs.First().Append("CARGA/DEVOLUÇÃO").Bold().FontSize(10d).Alignment = Alignment.center;
-                                    t.Rows[0].Cells[2].Paragraphs.First().Append("QUANTIDADE").Bold().FontSize(10d).Alignment = Alignment.center;
-
                                     produtosCargaDevoluçãoList = SqliteAcessoDados.LoadQuery<ProdutosCargaDevoluçãoModelo>("select * from ProdutosCargaDevolução where ProdutosCargaDevolução.CargaDevoluçãoID == " + cargaDevolução.Id + " and ProdutosCargaDevolução.ProdutoID == " + produto.Id);
-
-                                    int quantidade = 0;
 
                                     foreach (ProdutosCargaDevoluçãoModelo produtosCargaDevolução in produtosCargaDevoluçãoList)
                                     {
@@ -631,18 +632,25 @@ namespace ControleEstoque
 
                                         quantidade += cargaDevolução.Devolução ? produtosCargaDevolução.Quantidade : (produtosCargaDevolução.Quantidade * -1);
                                     }
+                                }
 
-                                    t.InsertRow();
+                                t.InsertRow();
 
-                                    t.Rows.Last().Cells[1].Paragraphs.First().Append("TOTAL PERIODO").Bold().FontSize(10d).Alignment = Alignment.left;
-                                    t.Rows.Last().Cells[2].Paragraphs.First().Append(quantidade.ToString()).FontSize(10d).Alignment = Alignment.left;
+                                t.Rows.Last().Cells[1].Paragraphs.First().Append("TOTAL PERIODO").Bold().FontSize(10d).Alignment = Alignment.left;
+                                t.Rows.Last().Cells[2].Paragraphs.First().Append(quantidade.ToString()).FontSize(10d).Alignment = Alignment.left;
 
-                                    document.InsertTable(t);
-                                }                                
+                                document.InsertTable(t);
                             }
 
-                            document.Save();
-
+                            try
+                            {
+                                document.Save();
+                                DialogResult result = MessageBox.Show("Relatorio gerado na pasta Meus Documentos -> Relatorios(" + docPath + ")", "Atenção!", MessageBoxButtons.OK);
+                            }
+                            catch
+                            {
+                                DialogResult result = MessageBox.Show("Arquivo aberto em outro aplicativo, favor fecha-lo antes de continuar", "Atenção!", MessageBoxButtons.OK);
+                            }
                         }
                     }
                     else

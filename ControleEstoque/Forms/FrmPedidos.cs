@@ -101,6 +101,7 @@ namespace ControleEstoque
             txtComissão.Enabled = false;
             txtComissãoValor.Enabled = false;
             txtPreçoFinal.Enabled = false;
+            txtPreçoGeralFinal.Enabled = false;
             txtValorPago.Enabled = false;
             btSearchPessoa.Enabled = false;
             btSearchVendedor.Enabled = false;
@@ -190,6 +191,7 @@ namespace ControleEstoque
             txtComissão.Text = "";
             txtComissãoValor.Text = "";
             txtPreçoFinal.Text = "";
+            txtPreçoGeralFinal.Text = "";
             cbAtivo.Checked = false;
             cbbPraça.Items.Clear();
         }
@@ -541,9 +543,9 @@ namespace ControleEstoque
             foreach (ItemModelo item in ItensList)
             {
                 SqliteAcessoDados.ExcluirQuery(item.PedidoId, "Item", "PedidoId");
-
-                ItensList.Clear();
             }
+
+            ItensList.Clear();
         }
 
         private void IncludeItens()
@@ -895,6 +897,8 @@ namespace ControleEstoque
             if (txtComissão.Text != "" && txtPreçoFinal.Text != "")
             {
                 txtComissãoValor.Text = string.Format("{0:C}", decimal.Parse(txtPreçoFinal.Text.Replace("R$ ", "")) * (decimal.Parse(txtComissão.Text) / 100));
+
+                txtPreçoGeralFinal.Text = string.Format("{0:C}", decimal.Parse(txtPreçoFinal.Text.Replace("R$ ", "")) - decimal.Parse(txtComissãoValor.Text.Replace("R$ ", "")));
             }
         }
 

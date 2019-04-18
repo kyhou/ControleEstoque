@@ -158,14 +158,20 @@ namespace ControleEstoque
 
         private void btPesquisar_Click(object sender, EventArgs e)
         {
+            string query = "";
             switch (tableName)
             {
                 case "Pessoa":
-                    string query = ReturnQuery();
+                    query = ReturnQuery();
                     if (formName == "FrmPedidos")
                     {
                         query += " and Ativo == 1 and Cliente == 1";
                     }
+                    else if (formName == "FrmVendedores")
+                    {
+                        query += " and Ativo == 1 and Cliente == 0";
+                    }
+
                     TableObjectPessoa = SqliteAcessoDados.GetPesquisarTodos<PessoaModelo>(query, tableName);
                     dgvResultados.DataSource = TableObjectPessoa;
                     break;
